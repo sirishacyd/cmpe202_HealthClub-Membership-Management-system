@@ -18,7 +18,7 @@ class Training(models.Model):
     end_time = models.DateTimeField()
     max_capacity = models.PositiveIntegerField()
     current_capacity = models.IntegerField(default=0)
-    # location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    location_id = models.ForeignKey(Location, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.training_type
@@ -46,8 +46,8 @@ class User_log(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     checkin_time = models.DateTimeField()
     checkout_time = models.DateTimeField(blank=True, null=True)
+    location_id = models.ForeignKey(Location, on_delete=models.CASCADE)
 
-    # location = models.ForeignKey(Location, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.user_id}"
 
