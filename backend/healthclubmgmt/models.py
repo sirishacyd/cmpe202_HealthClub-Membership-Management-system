@@ -78,3 +78,7 @@ class Enrollments(models.Model):
 
     def __str__(self):
         return f"{self.training_id} - {self.user_id}"
+
+    class Meta:
+        verbose_name = 'Enrollment'
+        verbose_name_plural = 'Enrollments'
