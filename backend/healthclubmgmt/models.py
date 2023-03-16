@@ -14,3 +14,21 @@ class Training(models.Model):
 
     def __str__(self):
         return self.training_type
+
+class Activity(models.Model):
+    id = models.IntegerField(primary_key=True)
+    type = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.type
+
+class ActivityLog(models.Model):
+    user_id = models.IntegerField()
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='activity_logs')
+    duration = models.IntegerField()
+    distance = models.FloatField()
+    calories = models.FloatField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.activity} - {self.user_id} - {self.timestamp}"
