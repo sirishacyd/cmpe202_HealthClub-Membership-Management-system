@@ -10,10 +10,37 @@ class Training(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     max_capacity = models.PositiveIntegerField()
+    current_capacity=models.IntegerField(default=0)
     #location = models.ForeignKey(Location, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.training_type
+
+class User(models.Model):
+    USER_TYPE = [
+        ('Member', 'Member'),
+        ('Non-member', 'Non-member'),
+        ('Admin', 'Admin'),
+    ]
+    user_id=models.CharField(max_length=255,primary_key=True)
+    first_name= models.CharField(max_length=255)
+    last_name= models.CharField(max_length=255)
+    phone= models.CharField(max_length=10)
+    user_type=models.CharField(max_length=10, choices=USER_TYPE)
+    trial_expiry=models.DateTimeField(blank=True,null=True)
+    password= models.CharField(max_length=25)
+    def __str__(self):
+        return self.user_id
+
+class User_log(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    checkin_time=models.DateTimeField()
+    checkout_time=models.DateTimeField(blank=True,null=True)
+    #location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.user_id}"
+
+
 
 class Activity(models.Model):
     id = models.IntegerField(primary_key=True)
