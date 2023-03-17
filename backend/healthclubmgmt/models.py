@@ -61,7 +61,7 @@ class Activity(models.Model):
 
 
 class ActivityLog(models.Model):
-    user_id = models.IntegerField()
+    user_id = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='activity_logs')
     duration = models.IntegerField()
     distance = models.FloatField()
