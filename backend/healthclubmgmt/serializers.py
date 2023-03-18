@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import Training
-from .models import Activity, ActivityLog, User
+from .models import Activity, ActivityLog, Location, User, User_log
 
 
 #Training Model Serializer
@@ -8,7 +8,19 @@ class TrainingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Training
         fields = ('id', 'instructor_name', 'training_type', 'start_time', 'end_time', 'max_capacity', 'location', 'current_capacity')
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('user_id', 'first_name', 'last_name', 'phone', 'user_type', 'trial_expiry', 'password')
         
+class UserLogSerializer(serializers.ModelSerializer):
+    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    location_id = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all())
+    class Meta:
+        model = User_log       
+        fields = ('user_id', 'checkin_time', 'checkout_time', 'location_id')
+
 class ActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Activity
