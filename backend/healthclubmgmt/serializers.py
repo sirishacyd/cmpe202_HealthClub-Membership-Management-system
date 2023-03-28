@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from rest_framework import serializers
 from .models import Training, Enrollments
 from .models import Activity, ActivityLog, Location, User, User_log
