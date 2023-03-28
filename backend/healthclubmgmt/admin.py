@@ -4,7 +4,7 @@ from .models import Training, User, User_log, Activity, ActivityLog, Location, E
 
 class TrainingAdmin(admin.ModelAdmin):
     list_display = (
-        'training_id', 'training_type', 'instructor_name', 'start_time', 'end_time', 'max_capacity', 'current_capacity')
+        'training_id', 'training_type', 'instructor_name', 'start_time', 'end_time', 'max_capacity', 'current_capacity', 'location_id')
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -16,16 +16,14 @@ class User_logAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('location_id','location_name', 'location_address')
-
+    list_display = ('location_id', 'location_name', 'location_address')
 
 
 class EnrollmentsAdmin(admin.ModelAdmin):
-    list_display = ('training_id', 'user_id','training_type')
+    list_display = ('training_id', 'user_id', 'training_type')
 
 
-
-# Register your models here. 
+# Register your models here.
 admin.site.register(Training, TrainingAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(User_log, User_logAdmin)
