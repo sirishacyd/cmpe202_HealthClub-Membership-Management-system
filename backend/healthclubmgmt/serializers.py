@@ -13,8 +13,6 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ('location_id', 'location_name', 'location_address')
 
 class TrainingSerializer(serializers.ModelSerializer):
-    location_id = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all())
-
     class Meta:
         model = Training
         fields = ('training_id', 'instructor_name', 'training_type', 'start_time', 'end_time', 'max_capacity', 'current_capacity', 'location_id')
