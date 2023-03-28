@@ -1,4 +1,6 @@
 from django.db import models
+import datetime
+from datetime import date
 
 
 class Location(models.Model):
@@ -30,13 +32,26 @@ class User(models.Model):
         ('Non-member', 'Non-member'),
         ('Admin', 'Admin'),
     ]
-    user_id = models.CharField(max_length=255, primary_key=True)
+    user_id = models.EmailField(max_length=255, primary_key=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     phone = models.CharField(max_length=10)
     user_type = models.CharField(max_length=10, choices=USER_TYPE)
-    trial_expiry = models.DateTimeField(blank=True, null=True)
-    password = models.CharField(max_length=25)
+    trial_expiry = models.DateField(blank=True, null=True)
+    password = models.CharField(max_length=25, blank=True)
+
+    def save(self, *args, **kwargs):
+        if self.user_type == self.USER_TYPE[1][0] and self.trial_expiry == None:
+            expiry = date.today()
+            expiry += datetime.timedelta(days=30)
+            self.trial_expiry = expiry
+        else: 
+            self.trial_expiry = None
+        if self.password == "":
+            self.password = "default_password!"
+        
+        super().save()
+            
 
     def __str__(self):
         return self.user_id

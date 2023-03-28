@@ -10,7 +10,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 # from django.contrib.auth.models import User
 from .models import User_log, User
-from .serializers import UserLogSerializer
+from .serializers import UserLogSerializer, UserSerializer
 
 # Create your views here.
 
@@ -33,6 +33,18 @@ class UserLogViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def checkin(self, request):
         serializer = UserLogSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class SignupSet(viewsets.ModelViewSet):    
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+    @action(detail=False, methods=['post'])
+    def signup(self, request):
+        serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
