@@ -21,7 +21,7 @@ class TrainingSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'instructor_name', 'training_type', 'start_time', 'end_time', 'max_capacity', 'location', 'current_capacity')
+        fields = ('user_id', 'first_name', 'last_name', 'phone', 'user_type', 'trial_expiry', 'password')
 
 class UserLogSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
