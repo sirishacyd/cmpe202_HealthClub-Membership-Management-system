@@ -13,8 +13,6 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ('location_id', 'location_name', 'location_address')
 
 class TrainingSerializer(serializers.ModelSerializer):
-    location_id = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all())
-
     class Meta:
         model = Training
         fields = ('training_id', 'instructor_name', 'training_type', 'start_time', 'end_time', 'max_capacity', 'current_capacity', 'location_id')
@@ -23,7 +21,7 @@ class TrainingSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'instructor_name', 'training_type', 'start_time', 'end_time', 'max_capacity', 'location', 'current_capacity')
+        fields = ('user_id', 'first_name', 'last_name', 'phone', 'user_type', 'trial_expiry', 'password')
 
 class UserLogSerializer(serializers.ModelSerializer):
     user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
