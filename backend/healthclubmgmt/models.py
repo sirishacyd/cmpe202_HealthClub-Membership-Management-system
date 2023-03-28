@@ -23,7 +23,7 @@ class Training(models.Model):
     location_id = models.ForeignKey(Location, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.training_type
+        return str(self.training_id)
 
 
 class User(models.Model):
@@ -90,6 +90,17 @@ class ActivityLog(models.Model):
 class Enrollments(models.Model):
     training_id = models.ForeignKey(Training, on_delete=models.CASCADE)
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    training_type = models.CharField(max_length=255, blank=True, null=True)
+    
+
+    def __str__(self):
+        return self.training_type
+    
+    def save(self,*args,**kwargs):
+        if self.training_type is None or self.training_type == "":
+            self.training_type = self.training_id.training_type
+        super(Enrollments, self).save(*args,**kwargs)
+        
 
     def __str__(self):
         return f"{self.training_id} - {self.user_id}"

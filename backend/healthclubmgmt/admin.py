@@ -16,11 +16,13 @@ class User_logAdmin(admin.ModelAdmin):
 
 
 class LocationAdmin(admin.ModelAdmin):
-    list_display = ('location_name', 'location_address')
+    list_display = ('location_id','location_name', 'location_address')
+
 
 
 class EnrollmentsAdmin(admin.ModelAdmin):
-    list_display = ('training_id', 'user_id')
+    list_display = ('training_id', 'user_id','training_type')
+
 
 
 # Register your models here. 
