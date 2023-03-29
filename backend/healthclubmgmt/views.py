@@ -46,6 +46,23 @@ class UserLogViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    @action(detail=False, methods=['put'])
+    def checkout(self, request):
+        user_id = request.data.get('user_id')
+        checkout_time = request.data.get('checkout_time')
+        try:
+            log_entry = User_log.objects.filter(user_id=user_id).latest('checkin_time')
+            if log_entry.checkout_time:
+                return Response({'error': 'User has already checked out.'}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                log_entry.checkout_time = checkout_time
+                log_entry.save()
+                serializer = UserLogSerializer(log_entry)
+                return Response(serializer.data)
+        except User_log.DoesNotExist:
+            return Response({'error': 'User has no check-in entry.'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class SignupSet(viewsets.ModelViewSet):
