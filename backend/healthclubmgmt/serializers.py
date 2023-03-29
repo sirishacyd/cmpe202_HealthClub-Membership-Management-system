@@ -36,8 +36,8 @@ class UserLogSerializer(serializers.ModelSerializer):
         user_id = validated_data.get('user_id')
         checkin_time = validated_data.get('checkin_time')
         location_id = validated_data.get('location_id')
-
-        user_log = User_log(user_id=user_id, checkin_time=checkin_time, location_id=location_id)
+        checkout_time = validated_data.get('checkout_time')
+        user_log = User_log(user_id=user_id, checkin_time=checkin_time, checkout_time=checkout_time, location_id=location_id)
         user_log.save()
         return user_log
         
