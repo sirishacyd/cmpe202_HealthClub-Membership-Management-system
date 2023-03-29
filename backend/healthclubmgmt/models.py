@@ -9,7 +9,7 @@ class Location(models.Model):
     location_address = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.location_name
+        return str(self.location_id)
 
 
 class Training(models.Model):
