@@ -1,6 +1,6 @@
 from django.urls import path,include
 from . import views
-from .views import ClassSchedulesListView, SignupSet
+from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraining
 from rest_framework.routers import DefaultRouter
 # router = DefaultRouter()
 # router.register(r'', UserLogViewSet)
@@ -9,5 +9,7 @@ urlpatterns = [
     path('api/checkin/', views.UserLogViewSet.as_view({'post': 'checkin'})),
     path('api/checkout/', views.UserLogViewSet.as_view({'post': 'checkout'})),
     path('api/signup/', SignupSet.as_view({'post': 'signup'})),
-    path('api/signuptraining/', views.signUpTraining.as_view()),
+    path('api/signupfortraining/', signUpTraining.as_view({'post': 'signupfortraining'})),
+    path('api/viewtrainings/', viewTraining.as_view({'get': 'viewtrainingdetails'})),
+    path('api/viewtrainings/<int:pk>', viewTraining.as_view({'get': 'viewtrainingdetails'})),
 ]
