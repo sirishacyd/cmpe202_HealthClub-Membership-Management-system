@@ -22,7 +22,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 # Create your views here.
 
 class ClassSchedulesListView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAdminUser]
     def post(self, request):
         data = request.data
         serializer = TrainingSerializer(data=data)
@@ -41,6 +41,7 @@ class ClassSchedulesListView(APIView):
 class UserLogViewSet(viewsets.ModelViewSet):
     queryset = User_log.objects.all()
     serializer_class = UserLogSerializer
+    permission_classes = [IsAdminUser]
 
     @action(detail=False, methods=['post'])
     def checkin(self, request):
@@ -71,7 +72,7 @@ class UserLogViewSet(viewsets.ModelViewSet):
 class SignupSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny] 
+    permission_classes = [IsAdminUser] 
 
     @action(detail=False, methods=['post'])
     def signup(self, request):
@@ -110,6 +111,7 @@ class signUpTraining(viewsets.ModelViewSet):
 class viewTraining(viewsets.ModelViewSet):
     queryset = Training.objects.all()
     serializer_class = TrainingSerializer
+    permission_classes = [AllowAny] 
     lookup_field = 'pk'
     @action(detail=False, methods=['get'])
     def viewtrainingdetails(self, request, pk=None):
