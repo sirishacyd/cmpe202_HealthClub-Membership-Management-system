@@ -8,11 +8,11 @@ class TrainingAdmin(admin.ModelAdmin):
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'first_name', 'last_name', 'user_type', 'trial_expiry')
+    list_display = ('username', 'first_name', 'last_name', 'user_type', 'trial_expiry')
 
 
 class User_logAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'checkin_time', 'checkout_time')
+    list_display = ('username', 'checkin_time', 'checkout_time')
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -20,7 +20,7 @@ class LocationAdmin(admin.ModelAdmin):
 
 
 class EnrollmentsAdmin(admin.ModelAdmin):
-    list_display = ('training_id', 'user_id', 'training_type')
+    list_display = ('training_id', 'username', 'training_type')
 
 
 # Register your models here.
