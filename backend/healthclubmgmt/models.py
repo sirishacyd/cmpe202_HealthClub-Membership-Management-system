@@ -1,6 +1,10 @@
 from django.db import models
 import datetime
 from datetime import date
+from django.contrib.auth.models import User as ContribUser
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from django.contrib.auth.hashers import make_password
 
 
 class Location(models.Model):
@@ -26,45 +30,56 @@ class Training(models.Model):
         return str(self.training_id)
 
 
-class User(models.Model):
+class User(ContribUser):
     USER_TYPE = [
         ('Member', 'Member'),
         ('Non-member', 'Non-member'),
         ('Admin', 'Admin'),
     ]
-    user_id = models.EmailField(max_length=255, primary_key=True)
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
+
     phone = models.CharField(max_length=10)
     user_type = models.CharField(max_length=10, choices=USER_TYPE)
     trial_expiry = models.DateField(blank=True, null=True)
-    password = models.CharField(max_length=25, blank=True)
 
     def save(self, *args, **kwargs):
-        if self.user_type == self.USER_TYPE[1][0] and self.trial_expiry == None:
+        if self.isNonMember() and self.trial_expiry == None:
             expiry = date.today()
             expiry += datetime.timedelta(days=30)
             self.trial_expiry = expiry
         else: 
             self.trial_expiry = None
+
+        if self.user_type == self.USER_TYPE[2][0]:
+            self.is_staff = True
+
         if self.password == "":
             self.password = "default_password!"
+
+        if validate_email(self.username) != None: 
+            raise ValidationError("username needs to be an email ID")
+        else:
+            self.email = self.username
+        self.password= make_password(self.password)
         
         super().save()
             
+    def isNonMember(self):
+        if self.user_type == self.USER_TYPE[1][0]:
+            return True
+        return False
 
     def __str__(self):
-        return self.user_id
+        return self.username
 
 
 class User_log(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     checkin_time = models.DateTimeField()
     checkout_time = models.DateTimeField(blank=True, null=True)
     location_id = models.ForeignKey(Location, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.user_id}"
+        return f"{self.username}"
 
 
 class Activity(models.Model):
@@ -76,7 +91,7 @@ class Activity(models.Model):
 
 
 class ActivityLog(models.Model):
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE)
+    username = models.ForeignKey('User', on_delete=models.CASCADE)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, related_name='activity_logs')
     duration = models.IntegerField()
     distance = models.FloatField()
@@ -84,26 +99,24 @@ class ActivityLog(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.activity} - {self.user_id} - {self.timestamp}"
+        return f"{self.activity} - {self.username} - {self.timestamp}"
 
 
 class Enrollments(models.Model):
     training_id = models.ForeignKey(Training, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     training_type = models.CharField(max_length=255, blank=True, null=True)
     
-
     def __str__(self):
         return self.training_type
-    
+
     def save(self,*args,**kwargs):
         if self.training_type is None or self.training_type == "":
             self.training_type = self.training_id.training_type
         super(Enrollments, self).save(*args,**kwargs)
-        
 
     def __str__(self):
-        return f"{self.training_id} - {self.user_id}"
+        return f"{self.training_id} - {self.username}"
 
     class Meta:
         verbose_name = 'Enrollment'
