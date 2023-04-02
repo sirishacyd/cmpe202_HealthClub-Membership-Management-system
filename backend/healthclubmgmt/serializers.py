@@ -22,22 +22,22 @@ class TrainingSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('user_id', 'first_name', 'last_name', 'phone', 'user_type', 'trial_expiry', 'password')
+        fields = ('username', 'first_name', 'last_name', 'phone', 'user_type', 'trial_expiry', 'password')
 
 class UserLogSerializer(serializers.ModelSerializer):
-    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    username = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     location_id = serializers.PrimaryKeyRelatedField(queryset=Location.objects.all())
 
     class Meta:
         model = User_log
-        fields = ('id', 'user_id', 'checkin_time', 'checkout_time', 'location_id')
+        fields = ('id', 'username', 'checkin_time', 'checkout_time', 'location_id')
 
     def create(self, validated_data):
-        user_id = validated_data.get('user_id')
+        username = validated_data.get('username')
         checkin_time = validated_data.get('checkin_time')
         location_id = validated_data.get('location_id')
         checkout_time = validated_data.get('checkout_time')
-        user_log = User_log(user_id=user_id, checkin_time=checkin_time, checkout_time=checkout_time, location_id=location_id)
+        user_log = User_log(username=username, checkin_time=checkin_time, checkout_time=checkout_time, location_id=location_id)
         user_log.save()
         return user_log
         
@@ -48,12 +48,12 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 
 class ActivityLogSerializer(serializers.ModelSerializer):
-    user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='user')
+    username = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='user')
     activity = ActivitySerializer()
 
     class Meta:
         model = ActivityLog
-        fields = ('id', 'user_id', 'activity', 'duration', 'distance', 'calories', 'timestamp')
+        fields = ('id', 'username', 'activity', 'duration', 'distance', 'calories', 'timestamp')
 
     def create(self, validated_data):
         activity_data = validated_data.pop('activity')
@@ -63,8 +63,7 @@ class ActivityLogSerializer(serializers.ModelSerializer):
 
 class EnrollmentsSerializer(serializers.ModelSerializer):
     #training_id = serializers.PrimaryKeyRelatedField(queryset=Training.objects.all())
-    #user_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  
+    #username = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  
     class Meta:
         model = Enrollments
-        fields = ('id','training_id','user_id')
-
+        fields = ('id','training_id','username')

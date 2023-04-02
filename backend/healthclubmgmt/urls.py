@@ -1,9 +1,11 @@
-from django.urls import path,include
+from django.urls import path, include
 from . import views
 from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraining
 from rest_framework.routers import DefaultRouter
 # router = DefaultRouter()
 # router.register(r'', UserLogViewSet)
+from .views import ClassSchedulesListView, UserLogViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, LocationList, LocationDetails
+
 urlpatterns = [
     path('api/addClassSchedules/', ClassSchedulesListView.as_view()),
     path('api/checkin/', views.UserLogViewSet.as_view({'post': 'checkin'})),
@@ -12,4 +14,8 @@ urlpatterns = [
     path('api/signupfortraining/', signUpTraining.as_view({'post': 'signupfortraining'})),
     path('api/viewtrainings/', viewTraining.as_view({'get': 'viewtrainingdetails'})),
     path('api/viewtrainings/<int:pk>', viewTraining.as_view({'get': 'viewtrainingdetails'})),
+    path('login/', CustomAuthToken.as_view(), name='login'),
+    path('logout/', TokenRevokeSet.as_view({'delete': 'revoke'})),
+    path('api/locations/', LocationList.as_view({'get': 'locations'})),
+    path('api/locationdetails/', LocationDetails.as_view({'get': 'location_details'}))
 ]
