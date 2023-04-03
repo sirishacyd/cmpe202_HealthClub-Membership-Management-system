@@ -123,6 +123,9 @@ class cancelEnrollment(viewsets.ModelViewSet):
         userid = request.user.id
         training_id = kwargs['pk']
         obj = get_object_or_404(queryset, username=userid, training_id= training_id)
+        training_obj = Training.objects.get(training_id=training_id)
+        training_obj.current_capacity -= 1
+        training_obj.save()
         obj.delete()
         return Response({'Enrollment deleted!'}, status=status.HTTP_204_NO_CONTENT)
 
