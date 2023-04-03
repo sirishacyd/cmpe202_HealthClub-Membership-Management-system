@@ -70,7 +70,7 @@ class User(ContribUser):
 
     def __str__(self):
         return self.username
-
+    
 
 class User_log(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -115,9 +115,9 @@ class Enrollments(models.Model):
             self.training_type = self.training_id.training_type
         super(Enrollments, self).save(*args,**kwargs)
 
-    def __str__(self):
-        return f"{self.training_id} - {self.username}"
-
+    # def __str__(self):
+    #     return f"{self.training_id} - {self.username}"
+    
     class Meta:
         verbose_name = 'Enrollment'
         verbose_name_plural = 'Enrollments'

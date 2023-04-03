@@ -62,8 +62,16 @@ class ActivityLogSerializer(serializers.ModelSerializer):
         return activity_log
 
 class EnrollmentsSerializer(serializers.ModelSerializer):
-    #training_id = serializers.PrimaryKeyRelatedField(queryset=Training.objects.all())
-    #username = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())  
+    username = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    training_id = serializers.PrimaryKeyRelatedField(queryset=Training.objects.all())  
+
     class Meta:
         model = Enrollments
         fields = ('id','training_id','username')
+        
+    def create(self, validated_data):
+        username = validated_data.get('username')
+        training_id = validated_data.get('training_id')
+        enrollment = Enrollments(username=username, training_id=training_id)
+        enrollment.save()
+        return enrollment

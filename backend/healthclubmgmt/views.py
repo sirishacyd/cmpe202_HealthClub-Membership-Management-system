@@ -17,6 +17,7 @@ from .serializers import UserLogSerializer, UserSerializer, LocationSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.authtoken.views import ObtainAuthToken
+from django.shortcuts import get_object_or_404
 
 
 # Create your views here.
@@ -88,17 +89,16 @@ class SignupSet(viewsets.ModelViewSet):
 class signUpTraining(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
     serializer_class = EnrollmentsSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['username']
-
     @action(detail=False, methods=['post'])
     def signupfortraining(self, request, *args, **kwargs):
-        userTrainingObjects = Enrollments.objects.filter(username=request.data["username"])
+        username = request.user.username
+        userTrainingObjects = []
+        userTrainingObjects = Enrollments.objects.filter(username=request.user.id)
         userTrainingIDs = [i.training_id.training_id for i in userTrainingObjects]
         if int(request.data["training_id"]) in userTrainingIDs:
             return Response({'error': 'User is already registered for this training!'},
                             status=status.HTTP_400_BAD_REQUEST)
-
+        
         catch_training = Training.objects.get(pk=request.data["training_id"])
         if catch_training.current_capacity >= catch_training.max_capacity:
             return Response({
@@ -106,7 +106,7 @@ class signUpTraining(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST)
         catch_training.current_capacity += 1
         catch_training.save()
-
+        request.data["username"]=request.user.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
