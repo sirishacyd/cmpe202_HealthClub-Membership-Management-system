@@ -3,12 +3,12 @@ from .models import Training, User, User_log, Activity, ActivityLog, Location, E
 
 
 class TrainingAdmin(admin.ModelAdmin):
-    list_display = (
+    list_display = ( 
         'training_id', 'training_type', 'instructor_name', 'start_time', 'end_time', 'max_capacity', 'current_capacity', 'location_id')
 
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'first_name', 'last_name', 'user_type', 'trial_expiry')
+    list_display = ('id','username', 'first_name', 'last_name', 'user_type', 'trial_expiry')
 
 
 class User_logAdmin(admin.ModelAdmin):
