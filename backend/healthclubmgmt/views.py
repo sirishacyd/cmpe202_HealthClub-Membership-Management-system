@@ -112,6 +112,22 @@ class signUpTraining(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+class cancelEnrollment(viewsets.ModelViewSet):
+    queryset = Enrollments.objects.all()
+    serializer_class = EnrollmentsSerializer
+    #pk_field = 'training_id'
+    @action(detail=False, methods=['delete'])
+    def destroy(self, request,*args, **kwargs):
+        queryset = self.get_queryset()
+        userid = request.user.id
+        training_id = kwargs['pk']
+        obj = get_object_or_404(queryset, username=userid, training_id= training_id)
+        training_obj = Training.objects.get(training_id=training_id)
+        training_obj.current_capacity -= 1
+        training_obj.save()
+        obj.delete()
+        return Response({'Enrollment deleted!'}, status=status.HTTP_204_NO_CONTENT)
 
 
 class viewTraining(viewsets.ModelViewSet):

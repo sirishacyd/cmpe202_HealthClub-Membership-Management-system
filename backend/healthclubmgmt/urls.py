@@ -1,6 +1,6 @@
 from django.urls import path, include
 from . import views
-from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraining
+from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraining, cancelEnrollment
 # router = DefaultRouter()
 # router.register(r'', UserLogViewSet)
 from .views import ClassSchedulesListView, UserLogViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, LocationList, LocationDetails
@@ -18,5 +18,7 @@ urlpatterns = [
     path('logout/', TokenRevokeSet.as_view({'delete': 'revoke'})),
     path('api/locations/', LocationList.as_view({'get': 'locations'})),
     path('api/locationdetails/', LocationDetails.as_view({'get': 'location_details'})),
+    #url endpoint to cancel enrollments for trainings--<int:pk> below is the training id--
+    path('api/cancelenrollment/<int:pk>', cancelEnrollment.as_view({'delete': 'destroy'})),
     
 ]
