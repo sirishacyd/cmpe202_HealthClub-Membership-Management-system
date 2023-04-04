@@ -129,22 +129,23 @@ class cancelEnrollment(viewsets.ModelViewSet):
         obj.delete()
         return Response({'Enrollment deleted!'}, status=status.HTTP_204_NO_CONTENT)
 
-
+"""This returns all training for a loction with pk """
 class viewTraining(viewsets.ModelViewSet):
     queryset = Training.objects.all()
     serializer_class = TrainingSerializer
     permission_classes = [AllowAny]
-    lookup_field = 'pk'
-
     @action(detail=False, methods=['get'])
-    def viewtrainingdetails(self, request, pk=None):
-        if pk is not None:
-            training = self.get_object()
-            serializer = self.get_serializer(training)
-            return Response(serializer.data)
-        else:
-            trainings = self.get_queryset()
-            serializer = self.get_serializer(trainings, many=True)
+    def viewtrainingdetails(self, request,*args, **kwargs):
+        try:
+            location_id = kwargs['pk']
+            if kwargs['pk']:
+                location_id = kwargs['pk']
+                training = Training.objects.filter(location_id=location_id)
+                serializer = TrainingSerializer(training,many=True)
+                return Response(serializer.data)
+        except:
+            training = Training.objects.filter()
+            serializer = TrainingSerializer(training,many=True)
             return Response(serializer.data)
 
 
