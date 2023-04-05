@@ -58,7 +58,6 @@ class ActivityLogSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'activity', 'duration', 'distance', 'calories', 'timestamp')
     
     def validate(self, data):
-        print(data)
         username = data['username']
         timestamp = data['timestamp']
         duration = data['duration']
