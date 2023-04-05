@@ -8,7 +8,7 @@ from .views import ClassSchedulesListView, UserLogViewSet, SignupSet, TokenRevok
 urlpatterns = [
     path('api/addClassSchedules/', ClassSchedulesListView.as_view()),
     path('api/checkin/', views.UserLogViewSet.as_view({'post': 'checkin'})),
-    path('api/checkout/', views.UserLogViewSet.as_view({'post': 'checkout'})),
+    path('api/checkout/', views.UserLogViewSet.as_view({'put': 'checkout'})),
     path('api/signup/', SignupSet.as_view({'post': 'signup'})),
     path('api/signupfortraining/', signUpTraining.as_view({'post': 'signupfortraining'})),
     path('api/viewtrainings/', viewTraining.as_view({'get': 'viewtrainingdetails'})),

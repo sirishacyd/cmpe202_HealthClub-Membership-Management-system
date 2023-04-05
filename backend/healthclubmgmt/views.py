@@ -18,6 +18,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.shortcuts import get_object_or_404
+from datetime import datetime
 
 
 # Create your views here.
@@ -46,8 +47,22 @@ class UserLogViewSet(viewsets.ModelViewSet):
     serializer_class = UserLogSerializer
     permission_classes = [IsAdminUser]
 
-    @action(detail=False, methods=['post'])
     def checkin(self, request):
+        username = request.data.get('username')
+        location_id = request.data.get('location_id')  # Get location from request data
+
+        # Filter user_log entries by both username and location
+        try:
+            latest_log_entry = User_log.objects.filter(username=username, location_id=location_id).latest('checkin_time')
+            if latest_log_entry.checkout_time is None:
+                return Response({'error': 'User has already checked in at this location and not yet checked out.'}, status=status.HTTP_400_BAD_REQUEST)
+        except User_log.DoesNotExist:
+            pass  # Allow check-in if no previous entry is found for the location
+
+        current_time = datetime.utcnow()
+        formatted_time = current_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+        request.data['checkin_time'] = formatted_time
+
         serializer = UserLogSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -57,9 +72,12 @@ class UserLogViewSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['put'])
     def checkout(self, request):
         username = request.data.get('username')
-        checkout_time = request.data.get('checkout_time')
+        location_id = request.data.get('location_id')
+        current_time = datetime.utcnow()
+        checkout_time = current_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+        request.data['checkout_time'] = checkout_time
         try:
-            log_entry = User_log.objects.filter(username=username).latest('checkin_time')
+            log_entry = User_log.objects.filter(username=username,location_id=location_id).latest('checkin_time')
             if log_entry.checkout_time:
                 return Response({'error': 'User has already checked out.'}, status=status.HTTP_400_BAD_REQUEST)
             else:
