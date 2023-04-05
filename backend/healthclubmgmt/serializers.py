@@ -7,7 +7,9 @@ from .models import Training,User_log, Location,User
 # from django.contrib.auth.models import User
 from .models import Training
 from .models import Activity, ActivityLog, User
-
+from datetime import datetime, timedelta
+from django.db.models import Q
+import pytz
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
@@ -48,18 +50,34 @@ class ActivitySerializer(serializers.ModelSerializer):
 
 
 class ActivityLogSerializer(serializers.ModelSerializer):
-    username = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='user')
-    activity = ActivitySerializer()
+    username = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    activity = serializers.PrimaryKeyRelatedField(queryset=Activity.objects.all())
 
     class Meta:
         model = ActivityLog
         fields = ('id', 'username', 'activity', 'duration', 'distance', 'calories', 'timestamp')
+    
+    def validate(self, data):
+        print(data)
+        username = data['username']
+        timestamp = data['timestamp']
+        duration = data['duration']
+        end_time = timestamp + timedelta(minutes=duration)
+        # Check if the timestamp is in the future
+        now = datetime.utcnow().replace(tzinfo=pytz.utc)
+        if timestamp > now:
+            raise serializers.ValidationError("Timestamp cannot be in the future.")
 
-    def create(self, validated_data):
-        activity_data = validated_data.pop('activity')
-        activity, _ = Activity.objects.get_or_create(**activity_data)
-        activity_log = ActivityLog.objects.create(activity=activity, **validated_data)
-        return activity_log
+        overlapping_logs = ActivityLog.objects.filter(username=username).filter(
+            Q(timestamp__range=(timestamp, end_time)) |
+            Q(timestamp__lte=timestamp, timestamp__range=(timestamp, end_time)) |
+            Q(timestamp__range=(timestamp, end_time), timestamp__gte=end_time)
+        )
+
+        if overlapping_logs.exists():
+            raise serializers.ValidationError("There is an overlapping activity log.")
+
+        return data    
 
 class EnrollmentsSerializer(serializers.ModelSerializer):
     username = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())

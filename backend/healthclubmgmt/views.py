@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http.response import JsonResponse
 from .models import Training, Enrollments
-from .serializers import TrainingSerializer, EnrollmentsSerializer
+from .serializers import TrainingSerializer, EnrollmentsSerializer,ActivityLogSerializer
 from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -15,7 +15,7 @@ from rest_framework.decorators import action
 from .models import User_log, User, Location
 from .serializers import UserLogSerializer, UserSerializer, LocationSerializer
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import AllowAny, IsAdminUser,IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.shortcuts import get_object_or_404
 from datetime import datetime
@@ -215,3 +215,14 @@ class LocationDetails(viewsets.ModelViewSet):
         location_details = location_details.values('location_name', 'location_address')
         serializer = self.get_serializer(location_details, many=True)
         return Response(serializer.data)
+
+class ActivityLogView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]  # Or other permissions you want to set
+    
+    @action(detail=False, methods=['post'])
+    def create(self, request):
+        serializer = ActivityLogSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

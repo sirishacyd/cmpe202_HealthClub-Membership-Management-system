@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 
 
+
 class Location(models.Model):
     location_id = models.AutoField(primary_key=True)
     location_name = models.CharField(max_length=255)
@@ -96,7 +97,7 @@ class ActivityLog(models.Model):
     duration = models.IntegerField()
     distance = models.FloatField()
     calories = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField()
 
     def __str__(self):
         return f"{self.activity} - {self.username} - {self.timestamp}"
