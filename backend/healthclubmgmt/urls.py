@@ -20,6 +20,6 @@ urlpatterns = [
     path('api/locationdetails/', LocationDetails.as_view({'get': 'location_details'})),
     #url endpoint to cancel enrollments for trainings--<int:pk> below is the training id--
     path('api/cancelenrollment/<int:pk>', cancelEnrollment.as_view({'delete': 'destroy'})),
-    path('api/activity_log/', ActivityLogView.as_view({'post': 'create'})),
+    path('api/logHours/', ActivityLogView.as_view({'post': 'create'})),
     
 ]
