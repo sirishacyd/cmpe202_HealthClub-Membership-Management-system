@@ -10,6 +10,7 @@ urlpatterns = [
     path('api/checkin/', views.UserLogViewSet.as_view({'post': 'checkin'})),
     path('api/checkout/', views.UserLogViewSet.as_view({'put': 'checkout'})),
     path('api/signup/', SignupSet.as_view({'post': 'signup'})),
+    path('api/updateMembership/<int:user_id>', SignupSet.as_view({'put': 'updateMembership'})),
     path('api/signupfortraining/', signUpTraining.as_view({'post': 'signupfortraining'})),
     path('api/viewtrainings/', viewTraining.as_view({'get': 'viewtrainingdetails'})),
     # url endpoint to list trainings based on location-- <int:pk> below is the location id--

@@ -110,6 +110,23 @@ class SignupSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=['put'])
+    def updateMembership(self,request,user_id):
+        try:
+         userObject=User.objects.get(id=user_id)
+         if(userObject.user_type=='Member'):
+            return Response({'error': 'User is already a member!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+         elif(userObject.user_type=='Admin'):
+             return Response({'error': 'User is an employee!'},
+                            status=status.HTTP_400_BAD_REQUEST)
+         else:
+            userObject.user_type='Member'
+            userObject.save()
+            serializer=UserSerializer(userObject)
+            return Response(serializer.data,status=status.HTTP_200_OK)
+        except:
+            return Response({'error': 'User does not exist!'}, status=status.HTTP_400_BAD_REQUEST)
 
 class signUpTraining(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
@@ -227,6 +244,7 @@ class CustomAuthToken(ObtainAuthToken):
         return Response({
             'token': token.key,
             'first_name': user.first_name,
+            'user_type': nUser.user_type,
         })
 
 
