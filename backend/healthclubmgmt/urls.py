@@ -3,7 +3,7 @@ from . import views
 from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraining, cancelEnrollment,ActivityLogView
 # router = DefaultRouter()
 # router.register(r'', UserLogViewSet)
-from .views import ClassSchedulesListView, UserLogViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, LocationList, LocationDetails
+from .views import ClassSchedulesListView, UserLogViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, LocationList, LocationDetails, ViewMemberTrainingEnrollment
 
 urlpatterns = [
     path('api/addClassSchedules/', ClassSchedulesListView.as_view()),
@@ -21,5 +21,8 @@ urlpatterns = [
     #url endpoint to cancel enrollments for trainings--<int:pk> below is the training id--
     path('api/cancelenrollment/<int:pk>', cancelEnrollment.as_view({'delete': 'destroy'})),
     path('api/logHours/', ActivityLogView.as_view({'post': 'create'})),
+
+    # API endpoint for view member specific training enrollment details
+    path('api/viewmembertrainingenrollment/<int:user_id>', ViewMemberTrainingEnrollment.as_view({'get': 'list'}))
     
 ]
