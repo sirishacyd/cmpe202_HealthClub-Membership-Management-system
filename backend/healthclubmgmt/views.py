@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http.response import JsonResponse
 from .models import Training, Enrollments
-from .serializers import TrainingSerializer, EnrollmentsSerializer,ActivityLogSerializer
+from .serializers import TrainingSerializer, EnrollmentsSerializer, ActivityLogSerializer
 from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -15,10 +15,11 @@ from rest_framework.decorators import action
 from .models import User_log, User, Location
 from .serializers import UserLogSerializer, UserSerializer, LocationSerializer
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import AllowAny, IsAdminUser,IsAuthenticated
+from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from django.shortcuts import get_object_or_404
 from datetime import datetime
+from django.utils import timezone
 
 
 # Create your views here.
@@ -33,8 +34,12 @@ class ClassSchedulesListView(APIView):
         if serializer.is_valid():
             start_time = serializer.validated_data['start_time']
             end_time = serializer.validated_data['end_time']
+            current_time = timezone.now()
             if end_time < start_time:
                 return Response({'error': 'End date/time cannot be less than Start date/time.'},
+                                status=status.HTTP_400_BAD_REQUEST)
+            elif start_time < current_time or end_time < current_time:
+                return Response({'error': 'Start or End date/time cannot be less than current system time.'},
                                 status=status.HTTP_400_BAD_REQUEST)
             else:
                 serializer.save()
@@ -53,9 +58,11 @@ class UserLogViewSet(viewsets.ModelViewSet):
 
         # Filter user_log entries by both username and location
         try:
-            latest_log_entry = User_log.objects.filter(username=username, location_id=location_id).latest('checkin_time')
+            latest_log_entry = User_log.objects.filter(username=username, location_id=location_id).latest(
+                'checkin_time')
             if latest_log_entry.checkout_time is None:
-                return Response({'error': 'User has already checked in at this location and not yet checked out.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'User has already checked in at this location and not yet checked out.'},
+                                status=status.HTTP_400_BAD_REQUEST)
         except User_log.DoesNotExist:
             pass  # Allow check-in if no previous entry is found for the location
 
@@ -77,7 +84,7 @@ class UserLogViewSet(viewsets.ModelViewSet):
         checkout_time = current_time.strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
         request.data['checkout_time'] = checkout_time
         try:
-            log_entry = User_log.objects.filter(username=username,location_id=location_id).latest('checkin_time')
+            log_entry = User_log.objects.filter(username=username, location_id=location_id).latest('checkin_time')
             if log_entry.checkout_time:
                 return Response({'error': 'User has already checked out.'}, status=status.HTTP_400_BAD_REQUEST)
             else:
@@ -107,6 +114,7 @@ class SignupSet(viewsets.ModelViewSet):
 class signUpTraining(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
     serializer_class = EnrollmentsSerializer
+
     @action(detail=False, methods=['post'])
     def signupfortraining(self, request, *args, **kwargs):
         username = request.user.username
@@ -116,7 +124,7 @@ class signUpTraining(viewsets.ModelViewSet):
         if int(request.data["training_id"]) in userTrainingIDs:
             return Response({'error': 'User is already registered for this training!'},
                             status=status.HTTP_400_BAD_REQUEST)
-        
+
         catch_training = Training.objects.get(pk=request.data["training_id"])
         if catch_training.current_capacity >= catch_training.max_capacity:
             return Response({
@@ -124,54 +132,84 @@ class signUpTraining(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST)
         catch_training.current_capacity += 1
         catch_training.save()
-        request.data["username"]=request.user.id
+        request.data["username"] = request.user.id
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    
+
+
 class cancelEnrollment(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
     serializer_class = EnrollmentsSerializer
-    #pk_field = 'training_id'
+
+    # pk_field = 'training_id'
     @action(detail=False, methods=['delete'])
-    def destroy(self, request,*args, **kwargs):
+    def destroy(self, request, *args, **kwargs):
         queryset = self.get_queryset()
         userid = request.user.id
         training_id = kwargs['pk']
-        obj = get_object_or_404(queryset, username=userid, training_id= training_id)
+        obj = get_object_or_404(queryset, username=userid, training_id=training_id)
         training_obj = Training.objects.get(training_id=training_id)
         training_obj.current_capacity -= 1
         training_obj.save()
         obj.delete()
         return Response({'Enrollment deleted!'}, status=status.HTTP_204_NO_CONTENT)
 
+
 """This returns all training for a loction with pk """
+
+
 class viewTraining(viewsets.ModelViewSet):
     queryset = Training.objects.all()
     serializer_class = TrainingSerializer
     permission_classes = [AllowAny]
+
     @action(detail=False, methods=['get'])
-    def viewtrainingdetails(self, request,*args, **kwargs):
+    def viewtrainingdetails(self, request, *args, **kwargs):
         try:
             location_id = kwargs['pk']
             if kwargs['pk']:
                 location_id = kwargs['pk']
                 training = Training.objects.filter(location_id=location_id)
-                serializer = TrainingSerializer(training,many=True)
+                serializer = TrainingSerializer(training, many=True)
                 return Response(serializer.data)
         except:
             training = Training.objects.filter()
-            serializer = TrainingSerializer(training,many=True)
+            serializer = TrainingSerializer(training, many=True)
             return Response(serializer.data)
+
+
+# This API is used for retrieving Member specific enrollment details
+class ViewMemberTrainingEnrollment(viewsets.ModelViewSet):
+    serializer_class = TrainingSerializer
+
+    @action(detail=False, methods=['get'])
+    def list(self, request, user_id=None):
+        enrollments = Enrollments.objects.filter(username__id=request.user.id).select_related('training_id')
+        training_ids = [enrollment.training_id_id for enrollment in enrollments]
+        trainings = Training.objects.filter(training_id__in=training_ids).select_related('location_id')
+
+        memberdetails = []
+        for training in trainings:
+            location_name = training.location_id.location_name
+            memberdetails.append({
+                'Instructor_name': training.instructor_name,
+                'Class_Type': training.training_type,
+                'Start_time': training.start_time,
+                'End_time': training.end_time,
+                'location_name': location_name
+            })
+
+        return Response(memberdetails)
 
 
 class TokenRevokeSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['delete'])
     def revoke(self, request):
         request.auth.delete()
-        return Response({'Logged out successdfully!'}, status=status.HTTP_200_OK)
+        return Response({'Logged out successfully!'}, status=status.HTTP_200_OK)
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -216,9 +254,10 @@ class LocationDetails(viewsets.ModelViewSet):
         serializer = self.get_serializer(location_details, many=True)
         return Response(serializer.data)
 
+
 class ActivityLogView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  # Or other permissions you want to set
-    
+
     @action(detail=False, methods=['post'])
     def create(self, request):
         serializer = ActivityLogSerializer(data=request.data)
