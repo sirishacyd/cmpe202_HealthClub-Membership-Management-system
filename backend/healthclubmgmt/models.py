@@ -7,6 +7,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
 
 
+
 class Location(models.Model):
     location_id = models.AutoField(primary_key=True)
     location_name = models.CharField(max_length=255)
@@ -29,7 +30,6 @@ class Training(models.Model):
     def __str__(self):
         return str(self.training_id)
 
-
 class User(ContribUser):
     USER_TYPE = [
         ('Member', 'Member'),
@@ -46,20 +46,21 @@ class User(ContribUser):
             expiry = date.today()
             expiry += datetime.timedelta(days=30)
             self.trial_expiry = expiry
+            self.set_unusable_password()
         else: 
+            if not self.has_usable_password():
+                self.password= make_password("default_password!")
+            elif not self.check_password(self.password): 
+                self.set_password(self.password)
             self.trial_expiry = None
-
-        if self.user_type == self.USER_TYPE[2][0]:
-            self.is_staff = True
-
-        if self.password == "":
-            self.password = "default_password!"
 
         if validate_email(self.username) != None: 
             raise ValidationError("username needs to be an email ID")
         else:
             self.email = self.username
-        self.password= make_password(self.password)
+
+        if self.user_type == self.USER_TYPE[2][0]:
+            self.is_staff = True
         
         super().save()
             
@@ -70,7 +71,7 @@ class User(ContribUser):
 
     def __str__(self):
         return self.username
-    
+
 
 class User_log(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -96,7 +97,7 @@ class ActivityLog(models.Model):
     duration = models.IntegerField()
     distance = models.FloatField()
     calories = models.FloatField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField()
 
     def __str__(self):
         return f"{self.activity} - {self.username} - {self.timestamp}"
