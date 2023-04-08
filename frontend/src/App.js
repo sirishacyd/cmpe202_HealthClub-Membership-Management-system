@@ -11,6 +11,7 @@ import {MemberHome} from "./components/memberhome";
 import {AdminHome} from "./components/adminhome";
 import {Navigation} from './components/navigations';
 import {Logout} from './components/logout';
+import AdminNav from "./components/AdminNav";
 
 function App() {
   return (
@@ -18,8 +19,6 @@ function App() {
     <Navigation></Navigation>
     <Routes>
       <Route path="/" element={<HomePage/>}/>
-      <Route path="/memberhome" element={<MemberHome/>}/>
-      <Route path="/adminhome" element={<AdminHome/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/logout" element={<Logout/>}/>
 
@@ -27,5 +26,4 @@ function App() {
   </BrowserRouter>
   );
 }
-
 export default App;

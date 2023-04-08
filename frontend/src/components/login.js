@@ -35,7 +35,7 @@ export const Login = () => {
                                           window.location.href = '/memberhome'
                                       }
                                       else if (localStorage.getItem('user_type') === 'Admin') {
-                                        window.location.href = '/adminhome';
+                                        window.location.href = '/adminhome/home';
                                       } else {
                                         window.location.href = '/';
                                       } 
