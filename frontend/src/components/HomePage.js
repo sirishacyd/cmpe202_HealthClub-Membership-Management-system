@@ -15,7 +15,7 @@ import LocationDropdown from './LocationDropdown';
 const HomePage = () => {
   return (
     <>
-      <Navbar bg="light" expand="lg">
+    {/*   <Navbar bg="light" expand="lg">
         <Container>
           <Navbar.Brand href="#home">Gym Logo</Navbar.Brand>
           <Nav className="me-auto">
@@ -28,7 +28,7 @@ const HomePage = () => {
             </Button>
           </Form>
         </Container>
-      </Navbar>
+      </Navbar> */}
 
       <div class="jumbotron">
         <Container>
