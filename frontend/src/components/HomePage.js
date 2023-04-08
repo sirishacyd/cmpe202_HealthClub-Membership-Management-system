@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {
   Container,
   Row,
@@ -10,8 +11,8 @@ import {
   Navbar,
   Form,
 } from 'react-bootstrap';
-
-const GymHomePage = () => {
+import LocationDropdown from './LocationDropdown';
+const HomePage = () => {
   return (
     <>
       <Navbar bg="light" expand="lg">
@@ -19,15 +20,12 @@ const GymHomePage = () => {
           <Navbar.Brand href="#home">Gym Logo</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#memberships">Memberships</Nav.Link>
-            <Nav.Link href="#class-schedules">Class Schedules</Nav.Link>
             <Nav.Link href="#contact">Contact</Nav.Link>
           </Nav>
           <Form inline>
             <Button variant="outline-primary" className="me-2">
               Login
             </Button>
-            <Button variant="outline-primary">Sign Up</Button>
           </Form>
         </Container>
       </Navbar>
@@ -35,22 +33,15 @@ const GymHomePage = () => {
       <div class="jumbotron">
         <Container>
           <h1>Welcome to Our Gym: Your Fitness Destination</h1>
-          <p>
-            <Button variant="primary">Join Now</Button>
-          </p>
         </Container>
       </div>
 
       <Container>
         <Row>
           <Col className="text-center">
-            <Form.Select>
-              <option>Select Location</option>
-              {/* Add location options here */}
-            </Form.Select>
+            <LocationDropdown aria-label="Select location" asDropdown={true}/>
           </Col>
         </Row>
-
         <Row className="my-4">
           <Col md={4}>
             <Card>
@@ -64,7 +55,6 @@ const GymHomePage = () => {
                     <li>No personal training sessions</li>
                   </ul>
                 </Card.Text>
-                <Button variant="primary">Start Trial</Button>
               </Card.Body>
             </Card>
           </Col>
@@ -80,7 +70,6 @@ const GymHomePage = () => {
                     <li>2 personal training sessions per month</li>
                   </ul>
                 </Card.Text>
-                <Button variant="primary">Join Now</Button>
               </Card.Body>
             </Card>
           </Col>
@@ -142,4 +131,4 @@ const GymHomePage = () => {
   );
 };
 
-export default GymHomePage;
+export default HomePage;
