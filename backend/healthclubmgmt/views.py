@@ -283,3 +283,19 @@ class ActivityLogView(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, email):
+        try:
+            userObject=User.objects.get(username=email)
+            response_data = {}
+            response_data['id'] = userObject.id
+            response_data['first_name'] = userObject.first_name
+            response_data['last_name'] = userObject.last_name
+            return JsonResponse(response_data)
+        except:
+            return Response({'error': 'User does not exist!'}, status=status.HTTP_400_BAD_REQUEST)
