@@ -3,7 +3,7 @@ from . import views
 from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraining, cancelEnrollment,ActivityLogView
 # router = DefaultRouter()
 # router.register(r'', UserLogViewSet)
-from .views import ClassSchedulesListView, UserLogViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, LocationList, LocationDetails, ViewMemberTrainingEnrollment
+from .views import ClassSchedulesListView, UserLogViewSet, UserViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, LocationList, LocationDetails, ViewMemberTrainingEnrollment
 
 urlpatterns = [
     path('api/addClassSchedules/', ClassSchedulesListView.as_view()),
@@ -11,6 +11,7 @@ urlpatterns = [
     path('api/checkout/', views.UserLogViewSet.as_view({'put': 'checkout'})),
     path('api/signup/', SignupSet.as_view({'post': 'signup'})),
     path('api/updateMembership/<int:user_id>', SignupSet.as_view({'put': 'updateMembership'})),
+    path('api/user/<str:email>', UserViewSet.as_view({'get': 'get'})),
     path('api/signupfortraining/', signUpTraining.as_view({'post': 'signupfortraining'})),
     path('api/viewtrainings/', viewTraining.as_view({'get': 'viewtrainingdetails'})),
     # url endpoint to list trainings based on location-- <int:pk> below is the location id--

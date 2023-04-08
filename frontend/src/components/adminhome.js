@@ -1,6 +1,14 @@
 // Import the react JS packages
 import {useEffect, useState} from "react";
+import {Routes, Route} from 'react-router-dom'
 import axios from "axios";
+import Container from "react-bootstrap/Container";
+import Navbar from "react-bootstrap/Navbar";
+import {Outlet} from "react-router-dom";
+import Nav from "react-bootstrap/Nav";
+import CheckIn from "./CheckIn";
+import Membership from "./Membership";
+import AdminNav from "./AdminNav";
 // Define the Login function.
 export const AdminHome = () => {
      const [message, setMessage] = useState('');
@@ -31,7 +39,7 @@ export const AdminHome = () => {
          else {window.location.href = '/'};
      }, []);
      return (
-        <div className="form-signin mt-5 text-center">
-          <h3>Hi {message}. You are a Admin. Welcome to AdminHome</h3>
-        </div>
+             <div className="form-signin mt-5 text-center">
+                 <h3>Hi {message}. You are a Admin. Welcome to AdminHome</h3>
+             </div>
 )}
