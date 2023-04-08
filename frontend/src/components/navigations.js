@@ -1,6 +1,9 @@
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import React, { useState, useEffect} from 'react';
+import AdminNav from "./AdminNav";
+import {Route, Routes} from "react-router-dom";
+import {MemberHome} from "./memberhome";
 export function Navigation() {
    const [isAuth, setIsAuth] = useState(false);
    const [type, setType] = useState('');
@@ -45,6 +48,20 @@ export function Navigation() {
           </Nav>
           
         </Navbar>
+
+        <Routes>
+            {
+                (() => {
+                    if (isAuth) {
+                        if (type === "Admin") {
+                            return <Route path="/adminhome/*" element={<AdminNav/>}/>
+                        } else if (type === "Member") {
+                            return <Route path="/memberhome/*" element={<MemberHome/>}/>
+                        }
+                    }
+                })()
+            }
+        </Routes>
        </div>
      );
 }

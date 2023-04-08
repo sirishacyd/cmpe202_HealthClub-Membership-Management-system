@@ -19,8 +19,6 @@ function App() {
     <Navigation></Navigation>
     <Routes>
       <Route path="/" element={<HomePage/>}/>
-      <Route path="/memberhome/*" element={<MemberHome/>}/>
-      <Route path="/adminhome/*" element={<AdminNav/>}/>
       <Route path="/login" element={<Login/>}/>
       <Route path="/logout" element={<Logout/>}/>
 
