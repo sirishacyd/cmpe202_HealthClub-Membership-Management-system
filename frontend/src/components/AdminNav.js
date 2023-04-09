@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import {Outlet, Route, Routes} from "react-router-dom";
 import CheckIn from "./CheckIn";
 import Membership from "./Membership";
+import AddTrainings from "./AddTrainings";
 import {AdminHome} from "./adminhome";
 
 function TopNav() {
@@ -17,6 +18,7 @@ function TopNav() {
                             <Nav.Link href="/adminhome/home">Home</Nav.Link>
                             <Nav.Link href="/adminhome/check-in">Check In</Nav.Link>
                             <Nav.Link href="/adminhome/manage">Manage</Nav.Link>
+                            <Nav.Link href="/adminhome/addtraining">Add Trainings</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
@@ -25,6 +27,7 @@ function TopNav() {
                 <Route path="home" element={<AdminHome />} />
                 <Route path="check-in" element={<CheckIn/>}/>
                 <Route path="manage" element={<Membership/>}/>
+                <Route path="addtraining" element={<AddTrainings/>}/>
             </Routes>
             <Outlet />
         </>
