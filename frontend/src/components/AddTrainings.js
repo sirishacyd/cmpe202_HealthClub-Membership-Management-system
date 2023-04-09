@@ -48,29 +48,34 @@ function AddTrainings() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.post(urlPost, postdata, config)
-      .then(response => {
-        // Handle success response here
-        console.log(response.data);
-        setInstructorName('');
-        setTrainingType('');
-        setMaxCapacity('');
-        setLocationName('');
-        setStartTime('');
-        setEndTime('');
-        // Display success message here
-        setSuccess('Training added successfully.');
-      })
-      .catch(error => {
-        console.log(error.response.data);
-        // Handle error response here
-        if (error.response.data.error) {
-          setError(error.response.data.error);
-        } else {
-          alert('Something went wrong. Please try again later.');
+    if (instructorName && trainingType && maxCapacity && startTime && endTime && locationName) {
+        axios.post(urlPost, postdata, config)
+        .then(response => {
+            // Handle success response here
+            console.log(response.data);
+            setInstructorName('');
+            setTrainingType('');
+            setMaxCapacity('');
+            setLocationName('');
+            setStartTime('');
+            setEndTime('');
+            // Display success message here
+            setSuccess('Training added successfully.');
+        })
+        .catch(error => {
+            console.log(error.response.data);
+            // Handle error response here
+            if (error.response.data.error) {
+                setError(error.response.data.error);
+            } else {
+                alert('Something went wrong. Please try again later.');
         }
       });
-  };
+  } else {
+    // Display an error message if any field is not filled
+    setError('Please fill all the fields.');
+  }
+};
 
   return (
     <Container className="d-flex justify-content-md-center mt-3">
