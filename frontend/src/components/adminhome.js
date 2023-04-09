@@ -9,6 +9,7 @@ import Nav from "react-bootstrap/Nav";
 import CheckIn from "./CheckIn";
 import Membership from "./Membership";
 import AddTrainings from "./AddTrainings";
+import SignUpUsers from "./SignUpUsers";
 import AdminNav from "./AdminNav";
 // Define the Login function.
 export const AdminHome = () => {
