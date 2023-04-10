@@ -14,15 +14,6 @@ function SignUpUsers() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const postdata = {
-    first_name: firstName,
-    last_name: lastName,
-    username: userName,
-    phone: phoneNumber,
-    password: password,
-    user_type: userType,
-  };
-
   const config = {
     headers: { 'Authorization': 'token ' + localStorage.getItem("token"), 'Content-Type': 'application/json' }
   };
@@ -34,7 +25,19 @@ function SignUpUsers() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (firstName && lastName && userName && phoneNumber && password && userType) {
+    let postdata = {
+          first_name: firstName,
+          last_name: lastName,
+          username: userName,
+          phone: phoneNumber,
+          password: password,
+          user_type: userType,
+      };
+
+    if (postdata.user_type === "Non-member") {
+        postdata.password = "default";
+    }
+    if (postdata.first_name && postdata.last_name && postdata.username && postdata.phone && postdata.password && postdata.user_type) {
         axios.post(urlPost, postdata, config)
         .then(response => {
             // Handle success response here

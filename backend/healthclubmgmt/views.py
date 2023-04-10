@@ -103,10 +103,16 @@ class SignupSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'])
     def signup(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
+        try:
+         serializer = UserSerializer(data=request.data)
+         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except:
+            return Response({'error': 'Invalid email address!'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if serializer.errors['username'] != None:
+            return Response({'error': serializer.errors['username']}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
