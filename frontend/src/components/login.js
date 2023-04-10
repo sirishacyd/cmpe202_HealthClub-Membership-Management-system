@@ -52,7 +52,7 @@ export const Login = () => {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100vh',
+        height: '85vh',
       }}>
         <div className="Auth-form-container" style={{
           maxWidth: '400px',

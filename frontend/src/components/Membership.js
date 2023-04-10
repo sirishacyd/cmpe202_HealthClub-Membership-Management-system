@@ -89,7 +89,7 @@ class Membership extends React.Component {
 
     render() {
         return (
-            <Container className="pb-1 p-5 mb-4 bg-light rounded-3">
+            <Container className="d-flex justify-content-md-center mt-3">
                 <Toast show={this.state.toast} onClose={this.reset}>
                     <Toast.Header>
                         <img
@@ -101,7 +101,7 @@ class Membership extends React.Component {
                     </Toast.Header>
                     <Toast.Body>{this.state.message}</Toast.Body>
                 </Toast>
-                <Form>
+                <Form style={{ width: '500px' }}>
                     <Form.Label>Customer e-mail</Form.Label>
                     <Form.Control type="text" onChange={this.changeEmail} placeholder="Enter customer e-mail" />
                     <br />
