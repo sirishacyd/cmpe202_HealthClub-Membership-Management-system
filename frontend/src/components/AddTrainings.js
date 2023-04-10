@@ -79,7 +79,7 @@ function AddTrainings() {
 
   return (
     <Container className="d-flex justify-content-md-center mt-3">
-      <Form onSubmit={handleSubmit}>
+      <Form style={{ width: '500px' }} onSubmit={handleSubmit}>
         {error && <Alert variant="danger" dismissible onClose={handleAlertDismiss}>{error}</Alert>}
         {success && <Alert variant="success" dismissible onClose={handleAlertDismiss}>{success}</Alert>}
         <Form.Group className="d-flex align-items-center">
