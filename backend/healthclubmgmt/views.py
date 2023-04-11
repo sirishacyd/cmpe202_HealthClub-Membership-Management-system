@@ -184,22 +184,8 @@ class signUpTraining(viewsets.ModelViewSet):
 
     # Check if the user's trial membership has expired
         user = User.objects.get(id=username)
-        print("JOIN DATE")
-        print(user.date_joined+timedelta(days=30))
-        print(type(user.date_joined+timedelta(days=30)))
-        print("DATE TIME NOW")
-        print(datetime.now())
-        print(type(datetime.now()))
         current_time = datetime.now(pytz.utc)
         sub_expiry_date = user.date_joined + timedelta(days=30)
-        
-        print("=============================================")
-        print(current_time)
-        print(sub_expiry_date)
-        
-        print("=============================================")
-        
-        
         if (current_time > sub_expiry_date):
             return Response({
             'error': 'User trial membership has expired!'},
