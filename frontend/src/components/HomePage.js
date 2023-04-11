@@ -12,24 +12,9 @@ import {
   Form,
 } from 'react-bootstrap';
 import LocationDropdown from './LocationDropdown';
-const HomePage = () => {
+function HomePage () {
   return (
     <>
-    {/*   <Navbar bg="light" expand="lg">
-        <Container>
-          <Navbar.Brand href="#home">Gym Logo</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#contact">Contact</Nav.Link>
-          </Nav>
-          <Form inline>
-            <Button variant="outline-primary" className="me-2">
-              Login
-            </Button>
-          </Form>
-        </Container>
-      </Navbar> */}
-
       <div class="jumbotron">
         <Container>
           <h1>Welcome to Our Gym: Your Fitness Destination</h1>
@@ -37,11 +22,6 @@ const HomePage = () => {
       </div>
 
       <Container>
-        <Row>
-          <Col className="text-center">
-            <LocationDropdown aria-label="Select location" asDropdown={true}/>
-          </Col>
-        </Row>
         <Row className="my-4">
           <Col md={4}>
             <Card>
@@ -75,42 +55,11 @@ const HomePage = () => {
           </Col>
           {/* Add more membership cards here */}
         </Row>
-
-        <Row id="class-schedules" className="my-4">
-          <Col>
-            <h2>Class Schedule</h2>
-            <Table striped bordered hover responsive>
-              <thead>
-                <tr>
-                  <th>Day</th>
-                  <th>Time</th>
-                  <th>Class</th>
-                  <th>Instructor</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Monday</td>
-                  <td>6:00 AM - 7:00 AM</td>
-                  <td>Yoga</td>
-                  <td>Jane Smith</td>
-                </tr>
-                <tr>
-                    <td>Tuesday</td>
-                    <td>5:00 PM - 6:00 PM</td>
-                    <td>Cardio Kickboxing</td>
-                    <td>John Doe</td>
-                </tr>
-                <tr>
-                    <td>Wednesday</td>
-                    <td>7:00 PM - 8:00 PM</td>
-                    <td>Zumba</td>
-                    <td>Emily Johnson</td>
-                </tr>
-          {/* Add more rows with class schedule data here */}
-              </tbody>
-              </Table>
-            </Col>
+        <Row>
+          <Col className="text-center">
+            <p> Select Location in the Dropdown to see classes scheduled</p>
+            <LocationDropdown aria-label="Select location" asDropdown={true}/>
+          </Col>
         </Row>
       </Container>
 
