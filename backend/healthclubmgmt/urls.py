@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/updateMembership/<int:user_id>', SignupSet.as_view({'put': 'updateMembership'})),
     path('api/user/<str:email>', UserViewSet.as_view({'get': 'get'})),
     path('api/signupfortraining/', signUpTraining.as_view({'post': 'signupfortraining'})),
+    path('api/signupnonmembers/', signUpTraining.as_view({'post': 'signUpnonmembersfortraining'})),
     path('api/viewtrainings/', viewTraining.as_view({'get': 'viewtrainingdetails'})),
     # url endpoint to list trainings based on location-- <int:pk> below is the location id--
     path('api/viewtrainings/<int:pk>', viewTraining.as_view({'get': 'viewtrainingdetails'})),
