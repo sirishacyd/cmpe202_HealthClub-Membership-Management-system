@@ -3,7 +3,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import React, { useState, useEffect} from 'react';
 import AdminNav from "./AdminNav";
 import {Route, Routes} from "react-router-dom";
-import {MemberHome} from "./memberhome";
+import MemberNav from "./MemberNav";
 export function Navigation() {
    const [isAuth, setIsAuth] = useState(false);
    const [type, setType] = useState('');
@@ -32,7 +32,7 @@ export function Navigation() {
                   (() => {
                      if (isAuth) {
                         if (type === "Member") {
-                            return <Nav.Link href="/memberhome">Home</Nav.Link>
+                            return <Nav.Link href="/memberhome/home">Home</Nav.Link>
                         } else if (type === "Admin") {
                             return <Nav.Link href="/adminhome/home">Home</Nav.Link>
                         }
@@ -56,7 +56,7 @@ export function Navigation() {
                         if (type === "Admin") {
                             return <Route path="/adminhome/*" element={<AdminNav/>}/>
                         } else if (type === "Member") {
-                            return <Route path="/memberhome/*" element={<MemberHome/>}/>
+                            return <Route path="/memberhome/*" element={<MemberNav/>}/>
                         }
                     }
                 })()

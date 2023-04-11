@@ -29,6 +29,6 @@ urlpatterns = [
     path('api/logHours/', ActivityLogView.as_view({'post': 'create'})),
 
     # API endpoint for view member specific training enrollment details
-    path('api/viewmembertrainingenrollment/<int:user_id>', ViewMemberTrainingEnrollment.as_view({'get': 'list'}))
+    path('api/viewmembertrainingenrollment/', ViewMemberTrainingEnrollment.as_view({'get': 'list'}))
 
 ]
