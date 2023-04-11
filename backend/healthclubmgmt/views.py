@@ -7,6 +7,7 @@ from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from . import models
+from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
 # from django.contrib.auth.models import User
 from .serializers import TrainingSerializer
@@ -20,6 +21,8 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from django.shortcuts import get_object_or_404
 from datetime import datetime
 from django.utils import timezone
+from datetime import datetime, timedelta
+import pytz
 
 
 # Create your views here.
@@ -161,7 +164,72 @@ class signUpTraining(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    
+    @action(detail=False, methods=['post'])
+    def signUpnonmembersfortraining(self, request):
+    # Check if the user is an admin
+        permission_classes = [IsAdminUser]
 
+    # Get the username and training_id from the request data
+        username = request.data.get('username')
+        training_id = request.data.get('training_id')
+
+    # Check if the user is already enrolled in this training
+        userTrainingObjects = Enrollments.objects.filter(username=username)
+        userTrainingIDs = [i.training_id.training_id for i in userTrainingObjects]
+        if int(training_id) in userTrainingIDs:
+            return Response({'error': 'User is already registered for this training!'},
+                        status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the training session is at capacity
+        catch_training = Training.objects.get(pk=training_id)
+        if catch_training.current_capacity >= catch_training.max_capacity:
+            return Response({
+            'error': 'Capacity for the training session is full'},
+            status=status.HTTP_400_BAD_REQUEST)
+
+    # Check if the user's trial membership has expired
+        user = User.objects.get(id=username)
+        print("JOIN DATE")
+        print(user.date_joined+timedelta(days=30))
+        print(type(user.date_joined+timedelta(days=30)))
+        print("DATE TIME NOW")
+        print(datetime.now())
+        print(type(datetime.now()))
+        current_time = datetime.now(pytz.utc)
+        sub_expiry_date = user.date_joined + timedelta(days=30)
+        
+        print("=============================================")
+        print(current_time)
+        print(sub_expiry_date)
+        
+        print("=============================================")
+        
+        
+        if (current_time > sub_expiry_date):
+            return Response({
+            'error': 'User trial membership has expired!'},
+            status=status.HTTP_400_BAD_REQUEST)
+        
+
+    # Check if the training session is scheduled after the user's trial membership expiration
+        if catch_training.start_time >= sub_expiry_date:
+            return Response({
+            'error': 'Training session is scheduled after user trial membership expiration!'},
+            status=status.HTTP_400_BAD_REQUEST)
+        
+        catch_training.current_capacity += 1
+        catch_training.save()
+        #request.data["username"] = user.id
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+       
+
+        
 
 class cancelEnrollment(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
