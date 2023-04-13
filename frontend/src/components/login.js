@@ -32,7 +32,7 @@ export const Login = () => {
          axios.defaults.headers.common['Authorization'] = 
                                          `token ${data['token']}`;
          if(localStorage.getItem('user_type') === 'Member'){                   
-                                          window.location.href = '/memberhome'
+                                          window.location.href = '/memberhome/home';
                                       }
                                       else if (localStorage.getItem('user_type') === 'Admin') {
                                         window.location.href = '/adminhome/home';
