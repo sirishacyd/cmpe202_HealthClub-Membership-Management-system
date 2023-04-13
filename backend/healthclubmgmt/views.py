@@ -272,12 +272,14 @@ class ViewMemberTrainingEnrollment(viewsets.ModelViewSet):
         for training in trainings:
             location_name = training.location_id.location_name
             location_address = training.location_id.location_address
+            start_time = training.start_time.astimezone(pytz.timezone('America/Los_Angeles')).strftime("%Y-%m-%d %I:%M %p")
+            end_time = training.end_time.astimezone(pytz.timezone('America/Los_Angeles')).strftime("%Y-%m-%d %I:%M %p")
             memberdetails.append({
                 'Training_id': training.training_id,
                 'Instructor_name': training.instructor_name,
                 'Class_Type': training.training_type,
-                'Start_time': training.start_time,
-                'End_time': training.end_time,
+                'Start_time': start_time,
+                'End_time': end_time,
                 'location_name': location_name,
                 'location_address': location_address
             })
