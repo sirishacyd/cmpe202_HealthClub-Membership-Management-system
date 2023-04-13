@@ -109,7 +109,7 @@ export const MemberHome = () => {
                     </tbody>
                     </Table>
                     ) : (
-                          <Alert variant="info" id="empty-table-message">You are not Enrolled with Any Trainings at the Moment! Please Contact our Employees To Help You Enroll.</Alert>
+                          <Alert variant="info" id="empty-table-message">You are not Enrolled with Any Trainings at the Moment!</Alert>
                     )}
                     <Alert show={showAlert} variant="danger">{deleteMsg}</Alert>
             </div>
