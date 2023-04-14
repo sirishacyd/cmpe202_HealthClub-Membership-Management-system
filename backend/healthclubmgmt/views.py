@@ -175,6 +175,9 @@ class signUpTraining(viewsets.ModelViewSet):
         training_id = request.data.get('training_id')
 
     # Check if the user is already enrolled in this training
+        getUserObj = User.objects.filter(email=username)
+        print(getUserObj)
+        username = str(getUserObj.first().id) 
         userTrainingObjects = Enrollments.objects.filter(username=username)
         userTrainingIDs = [i.training_id.training_id for i in userTrainingObjects]
         if int(training_id) in userTrainingIDs:
@@ -182,7 +185,7 @@ class signUpTraining(viewsets.ModelViewSet):
                         status=status.HTTP_400_BAD_REQUEST)
 
     # Check if the training session is at capacity
-        catch_training = Training.objects.get(pk=training_id)
+        catch_training = Training.objects.get(pk=int(training_id))
         if catch_training.current_capacity >= catch_training.max_capacity:
             return Response({
             'error': 'Capacity for the training session is full'},
@@ -206,7 +209,7 @@ class signUpTraining(viewsets.ModelViewSet):
         
         catch_training.current_capacity += 1
         catch_training.save()
-        #request.data["username"] = user.id
+        request.data["username"] = username
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
