@@ -1,15 +1,15 @@
 .jumbotron {
-    background-color: rgb(4, 54, 70);
-    color: white;
+    background-color:  rgb(204, 184, 148);
+    color: rgb(9, 8, 8);
   }
   
   .card-color {
-    background-color: #4CAF50;
+    background-color: #7093da;;
     color: white;
   }
   
   footer {
-    background-color: #212121;
+    background-color: rgb(17, 16, 16);
     color: white;
   }
 

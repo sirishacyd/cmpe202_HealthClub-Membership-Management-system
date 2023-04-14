@@ -39,16 +39,19 @@
   }
   
   .table th {
-    background-color: #f2f2f2;
-    border: 1px solid #ddd;
+    background-color: #aeb4c1;
+    border: 1px solid #aeb4c1;
   }
   
   .table tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #7093da;
+  }
+  .table tr:nth-child(odd) {
+    background-color: #7093da;
   }
   
   .table tr:hover {
-    background-color: #ddd;
+    background-color: #d6d9df;
   }
   
   
