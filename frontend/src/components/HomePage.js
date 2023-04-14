@@ -1,30 +1,33 @@
 import React from 'react';
+// import backgroundImage from './background.jpg';
 
 import {
   Container,
   Row,
   Col,
-  Button,
+  // Button,
   Card,
-  Table,
-  Nav,
-  Navbar,
-  Form,
+  // Table,
+  // Nav,
+  // Navbar,
+  // Form,
 } from 'react-bootstrap';
 import LocationDropdown from './LocationDropdown';
-function HomePage () {
+
+import './home.css';
+import logo from './logo.png'; // Import your logo image file here
+
+function HomePage() {
   return (
-    <>
-      <div class="jumbotron">
+      <div className="jumbotron">
         <Container>
+          <img src={logo} alt="Gym Logo" className="logo" /> {/* Add logo */}
           <h1>Welcome to Our Gym: Your Fitness Destination</h1>
         </Container>
-      </div>
-
       <Container>
         <Row className="my-4">
           <Col md={4}>
-            <Card>
+            <Card className="card-color">
               <Card.Body>
                 <Card.Title>Free Trial</Card.Title>
                 <Card.Text>Price: $0</Card.Text>
@@ -39,7 +42,7 @@ function HomePage () {
             </Card>
           </Col>
           <Col md={4}>
-            <Card>
+            <Card className="card-color">
               <Card.Body>
                 <Card.Title>Normal Membership</Card.Title>
                 <Card.Text>Price: $80/month</Card.Text>
@@ -58,7 +61,10 @@ function HomePage () {
         <Row>
           <Col className="text-center">
             <p> Select Location in the Dropdown to see classes scheduled</p>
-            <LocationDropdown aria-label="Select location" asDropdown={true}/>
+            <LocationDropdown
+              aria-label="Select location"
+              asDropdown={true}
+            />
           </Col>
         </Row>
       </Container>
@@ -76,8 +82,8 @@ function HomePage () {
           </Col>
         </Row>
       </Container>
-    </>
+    </div>
   );
-};
+}
 
 export default HomePage;

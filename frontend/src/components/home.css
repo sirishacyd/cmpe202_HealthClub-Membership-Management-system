@@ -1,0 +1,27 @@
+.jumbotron {
+    background-color:  rgb(204, 184, 148);
+    color: rgb(9, 8, 8);
+  }
+  
+  .card-color {
+    background-color: #7093da;;
+    color: white;
+  }
+  
+  footer {
+    background-color: rgb(17, 16, 16);
+    color: white;
+  }
+
+  .logo {
+    max-width: 60px; /* Set the maximum width of the logo */
+    margin-bottom: 1rem;
+  }
+
+  /* .home-background {
+    background-image: url('./background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+  } */

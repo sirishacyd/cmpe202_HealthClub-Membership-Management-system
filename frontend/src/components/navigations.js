@@ -2,6 +2,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import React, { useState, useEffect} from 'react';
 import AdminNav from "./AdminNav";
+import MemberNav from "./MemberNav";
 import {Route, Routes} from "react-router-dom";
 import MemberNav from "./MemberNav";
 export function Navigation() {

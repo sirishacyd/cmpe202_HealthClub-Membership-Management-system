@@ -4,7 +4,7 @@ from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraini
 # router = DefaultRouter()
 # router.register(r'', UserLogViewSet)
 from .views import ClassSchedulesListView, UserLogViewSet, UserViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, \
-    LocationList, LocationDetails, ViewMemberTrainingEnrollment
+    LocationList, LocationDetails, ViewMemberTrainingEnrollment, ActivityList
 
 urlpatterns = [
     path('api/addClassSchedules/', ClassSchedulesListView.as_view()),
@@ -22,6 +22,7 @@ urlpatterns = [
     path('logout/', TokenRevokeSet.as_view({'delete': 'revoke'})),
     # API endpoint for get all location details including location id
     path('api/locations/', LocationList.as_view({'get': 'locations'})),
+    path('api/activities/', ActivityList.as_view({'get': 'activities'})),
     # API endpoint for get location name and location address
     path('api/locationdetails/', LocationDetails.as_view({'get': 'location_details'})),
     # url endpoint to cancel enrollments for trainings--<int:pk> below is the training id--
