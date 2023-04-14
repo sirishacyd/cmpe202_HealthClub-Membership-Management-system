@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ function LogActivityForm() {
   const [distance, setDistance] =  useState('');
   const [calories, setCalories] =  useState('');
   const [timestamp, setTimestamp] =  useState('');
+  const [activities, setActivities] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const handleAlertDismiss = () => {
@@ -18,6 +19,16 @@ function LogActivityForm() {
   const config = {
     headers: { 'Authorization': 'token ' + localStorage.getItem("token"), 'Content-Type': 'application/json' }
   };
+  useEffect(() => {
+    axios.get('http://localhost:8000/api/activities/', config)
+      .then(response => {
+        setActivities(response.data);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      });
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const apiUrl = 'http://localhost:8000/api/logHours/';
@@ -60,7 +71,12 @@ function LogActivityForm() {
 
         <Form.Group className="d-flex align-items-center">
           <Form.Label className="mr-3">Activity</Form.Label>
-          <Form.Control type="text" placeholder="Enter Activity" value={activity} onChange={(event) => setActivity(event.target.value)} />
+            <Form.Select value={activity} onChange={(event) => setActivity(event.target.value)}>
+                    <option value="">Select Activity</option>
+                    {activities.map(activity => (
+                        <option key={activity.id} value={activity.id}>{activity.type} </option>
+                    ))}
+            </Form.Select>
         </Form.Group>
 
         <Form.Group className="d-flex align-items-center">
