@@ -8,7 +8,6 @@ class CheckIn extends React.Component {
 
     constructor(props) {
         super(props);
-        localStorage.setItem("location_id", "1");
         this.state = {
             toast: false,
             email: "",
@@ -85,9 +84,10 @@ class CheckIn extends React.Component {
     }
 
     doPut(id) {
+        let location= JSON.parse(localStorage.getItem('location'));
         let data = {
             username: id,
-            location_id: localStorage.getItem("location_id"),
+            location_id: location.location_id,
         }
 
         fetch(
@@ -112,9 +112,10 @@ class CheckIn extends React.Component {
     }
 
     doPost(id) {
+        let location= JSON.parse(localStorage.getItem('location'));
         let data = {
             username: id,
-            location_id: localStorage.getItem("location_id"),
+            location_id: location.location_id,
         }
 
         console.log(JSON.stringify(data))

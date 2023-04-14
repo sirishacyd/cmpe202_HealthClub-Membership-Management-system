@@ -4,6 +4,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import {Outlet, Route, Routes} from "react-router-dom";
 import LogHours from "./LogHours";
 import {MemberHome} from "./memberhome";
+import ViewActivities from "./ViewActivities";
 
 function MemberTopNav() {
     return (
@@ -15,6 +16,7 @@ function MemberTopNav() {
                         <Nav className="me-auto">
                             <Nav.Link href="/memberhome/home">Home</Nav.Link>
                             <Nav.Link href="/memberhome/loghours">Log Hours</Nav.Link>
+                            <Nav.Link href="/memberhome/activities">View Activities</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
                 </Container>
@@ -22,6 +24,7 @@ function MemberTopNav() {
             <Routes>
                 <Route path="home" element={<MemberHome/>} />
                 <Route path="loghours" element={<LogHours/>}/>
+                <Route path="activities" element={<ViewActivities />} />
             </Routes>
             <Outlet />
         </>
