@@ -5,7 +5,7 @@ import {Outlet, Route, Routes} from "react-router-dom";
 import LogHours from "./LogHours";
 import {MemberHome} from "./memberhome";
 
-function TopNav() {
+function MemberTopNav() {
     return (
         <>
             <Navbar bg="light" expand="lg">
@@ -27,5 +27,5 @@ function TopNav() {
         </>
     );
 }
+export default MemberTopNav;
 
-export default TopNav;
