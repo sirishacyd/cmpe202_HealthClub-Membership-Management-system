@@ -2,6 +2,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import React, { useState, useEffect} from 'react';
 import AdminNav from "./AdminNav";
+import MemberNav from "./MemberNav";
 import {Route, Routes} from "react-router-dom";
 import {MemberHome} from "./memberhome";
 export function Navigation() {
@@ -56,7 +57,7 @@ export function Navigation() {
                         if (type === "Admin") {
                             return <Route path="/adminhome/*" element={<AdminNav/>}/>
                         } else if (type === "Member") {
-                            return <Route path="/memberhome/*" element={<MemberHome/>}/>
+                            return <Route path="/memberhome/*" element={<MemberNav/>}/>
                         }
                     }
                 })()
