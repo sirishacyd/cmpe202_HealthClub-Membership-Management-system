@@ -4,7 +4,6 @@ import React, { useState, useEffect} from 'react';
 import AdminNav from "./AdminNav";
 import MemberNav from "./MemberNav";
 import {Route, Routes} from "react-router-dom";
-import MemberNav from "./MemberNav";
 export function Navigation() {
    const [isAuth, setIsAuth] = useState(false);
    const [type, setType] = useState('');
