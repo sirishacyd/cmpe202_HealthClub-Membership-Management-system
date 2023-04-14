@@ -1,8 +1,8 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http.response import JsonResponse
-from .models import Training, Enrollments
-from .serializers import TrainingSerializer, EnrollmentsSerializer, ActivityLogSerializer
+from .models import Training, Enrollments, Activity
+from .serializers import TrainingSerializer, EnrollmentsSerializer, ActivityLogSerializer,ActivitySerializer
 from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -334,6 +334,7 @@ class LocationList(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
+        
 class LocationDetails(viewsets.ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
@@ -346,6 +347,28 @@ class LocationDetails(viewsets.ModelViewSet):
         serializer = self.get_serializer(location_details, many=True)
         return Response(serializer.data)
 
+class ActivityList(viewsets.ModelViewSet):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    permission_classes = [AllowAny]
+
+    @action(detail=False, methods=['get'])
+    def activities(self, request):
+        activities = self.get_queryset()
+        serializer = self.get_serializer(activities, many=True)
+        return Response(serializer.data)
+ 
+class ActivityDetails(viewsets.ModelViewSet):
+    queryset = Activity.objects.all()
+    serializer_class = ActivitySerializer
+    permission_classes = [AllowAny]
+
+    @action(detail=False, methods=['get'])
+    def activity_details(self, request):
+        activity_details = self.filter_queryset(self.get_queryset())
+        activity_details = activity_details.values('id','type')
+        serializer = self.get_serializer(activity_details, many=True)
+        return Response(serializer.data)
 
 class ActivityLogView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  # Or other permissions you want to set

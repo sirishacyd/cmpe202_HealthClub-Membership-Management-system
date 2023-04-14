@@ -46,7 +46,7 @@ class UserLogSerializer(serializers.ModelSerializer):
 class ActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Activity
-        fields = ('id', 'name', 'description')
+        fields = ('id', 'type')
 
 
 class ActivityLogSerializer(serializers.ModelSerializer):

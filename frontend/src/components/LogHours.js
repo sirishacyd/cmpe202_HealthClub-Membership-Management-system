@@ -48,10 +48,6 @@ function LogActivityForm() {
       });
   };
 
-
-
-
-
   return (
     <Container className="d-flex justify-content-md-center mt-3">
       <Form style={{ width: '500px' }} onSubmit={handleSubmit}>
