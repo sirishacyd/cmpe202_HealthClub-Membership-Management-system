@@ -23,6 +23,11 @@ function LocationDropdown({ asDropdown }) {
     }
   }, [selectedLocation]);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleString();
+  };
+
   const handleSelectChange = (event) => {
     setSelectedLocation(event.target.value);
   };
@@ -30,11 +35,11 @@ function LocationDropdown({ asDropdown }) {
   if (asDropdown) {
     return (
       <div>
-        <select value={selectedLocation} onChange={handleSelectChange} className={styles.dropdown} >
+        <select value={selectedLocation} onChange={handleSelectChange} className={styles.dropdown}>
           <option value="">Select a location</option>
           {locations.map(location => (
             <option key={location.location_id} value={location.location_id}>
-              {location.location_name}
+              {location.location_address}, {location.location_name}
             </option>
           ))}
         </select>
@@ -46,7 +51,6 @@ function LocationDropdown({ asDropdown }) {
                 <th>Training Type</th>
                 <th>Start Time</th>
                 <th>End Time</th>
-                <th>Max Capacity</th>
                 <th>Current Capacity</th>
               </tr>
             </thead>
@@ -55,9 +59,8 @@ function LocationDropdown({ asDropdown }) {
                 <tr key={training.training_id}>
                   <td>{training.instructor_name}</td>
                   <td>{training.training_type}</td>
-                  <td>{training.start_time}</td>
-                  <td>{training.end_time}</td>
-                  <td>{training.max_capacity}</td>
+                  <td>{formatDate(training.start_time)}</td>
+                  <td>{formatDate(training.end_time)}</td>
                   <td>{training.current_capacity}</td>
                 </tr>
               ))}
