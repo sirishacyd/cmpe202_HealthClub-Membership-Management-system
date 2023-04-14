@@ -53,10 +53,14 @@ export const Login = () => {
         justifyContent: 'center',
         alignItems: 'center',
         height: '85vh',
+        backgroundColor: '#F0F8FF',
       }}>
         <div className="Auth-form-container" style={{
           maxWidth: '400px',
           width: '100%',
+          backgroundColor: 'white', // Set container background color to white
+      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', // Add shadow to container
+      padding: '1rem', 
         }}>
           <form className="Auth-form" onSubmit={submit}>
             <div className="Auth-form-content">
@@ -87,7 +91,7 @@ export const Login = () => {
               </div>
               <div className="d-grid gap-6 mt-3" class="row justify-content-center">
                 <button type="submit" 
-                  className="btn btn-primary">Login</button>
+                  className="btn btn-primary" style={{ backgroundColor: '#4B0082' }}>Login</button>
               </div>
             </div>
           </form>
