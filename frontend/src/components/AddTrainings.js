@@ -1,28 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
 
 function AddTrainings() {
-  localStorage.setItem('location_id', '1');
   const urlPost = 'http://localhost:8000/api/addClassSchedules/';
   const [instructorName, setInstructorName] = useState('');
   const [trainingType, setTrainingType] = useState('');
   const [maxCapacity, setMaxCapacity] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
-  const [locationName, setLocationName] = useState('');
-  const [locationNames, setLocationNames] = useState([]);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [formValid, setFormValid] = useState(false);
-
+  let location= JSON.parse(localStorage.getItem('location'));
   const postdata = {
     instructor_name: instructorName,
     training_type: trainingType,
     max_capacity: maxCapacity,
-    location_name: locationName,
-    location_id : localStorage.getItem("location_id"),
+    location_id : location.location_id,
     start_time: startTime,
     end_time: endTime
   };
@@ -31,15 +26,6 @@ function AddTrainings() {
     headers: { 'Authorization': 'token ' + localStorage.getItem("token"), 'Content-Type': 'application/json' }
   };
 
-  useEffect(() => {
-    axios.get('http://localhost:8000/api/locations/', config)
-      .then(response => {
-        setLocationNames(response.data);
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      });
-  }, []);
 
   const handleAlertDismiss = () => {
     setError('');
@@ -48,7 +34,7 @@ function AddTrainings() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (instructorName && trainingType && maxCapacity && startTime && endTime && locationName) {
+    if (instructorName && trainingType && maxCapacity && startTime && endTime ) {
         axios.post(urlPost, postdata, config)
         .then(response => {
             // Handle success response here
@@ -56,7 +42,6 @@ function AddTrainings() {
             setInstructorName('');
             setTrainingType('');
             setMaxCapacity('');
-            setLocationName('');
             setStartTime('');
             setEndTime('');
             // Display success message here
@@ -95,16 +80,6 @@ function AddTrainings() {
         <Form.Group className="d-flex align-items-center">
           <Form.Label className="mr-3">Maximum Capacity</Form.Label>
           <Form.Control type="number" placeholder="Enter Maximum Capacity" value={maxCapacity} onChange={(event) => setMaxCapacity(event.target.value)} />
-        </Form.Group>
-
-        <Form.Group className="d-flex align-items-center">
-          <Form.Label className="mr-3">Location Name</Form.Label>
-            <Form.Select value={locationName} onChange={(event) => setLocationName(event.target.value)}>
-                    <option value="">Select Location Name</option>
-                    {locationNames.map(location => (
-                        <option key={location.location_id} value={location.location_name}>{location.location_name}</option>
-                    ))}
-            </Form.Select>
         </Form.Group>
 
         <Form.Group className="d-flex align-items-center">

@@ -13,7 +13,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import TrainingSerializer
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from .models import User_log, User, Location
+from .models import User_log, User, Location, ActivityLog,Activity
 from .serializers import UserLogSerializer, UserSerializer, LocationSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
@@ -387,3 +387,47 @@ class UserViewSet(viewsets.ModelViewSet):
             return JsonResponse(response_data)
         except:
             return Response({'error': 'User does not exist!'}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class ActivityLogSet(viewsets.ModelViewSet):
+    queryset= ActivityLog.objects.all()
+    serializer_class=ActivityLogSerializer
+    permission_classes=[IsAuthenticated]
+    @action(detail=False, methods=['get'])
+    def getActivityLog(self,request):
+        options = request.query_params.get('options', '')
+        try:
+            if options== '90_days':
+                today = timezone.now()
+                past_period = today - timedelta(days=90)
+                logs = ActivityLog.objects.filter(username=request.user.id, timestamp__gte=past_period)
+            elif options== 'week':
+                today = timezone.now()
+                past_period = today - timedelta(weeks=1)
+                logs = ActivityLog.objects.filter(username=request.user.id, timestamp__gte=past_period)
+            elif options== 'month':
+                today = timezone.now()
+                past_period = today - timedelta(weeks=4)
+                logs = ActivityLog.objects.filter(username=request.user.id, timestamp__gte=past_period)
+            else:
+                 return Response({'error':'Invalid option'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except:
+             return Response({'error':'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
+             
+        data = []
+        if(logs==None):
+            return Response({'No logs found'}, status=status.HTTP_200_OK)
+        for log in logs:
+          data.append({
+            'activity':log.activity.type,
+            'duration': log.duration,
+            'calories':log.calories,
+            'timestamp': log.timestamp,
+            'distance':log.distance
+            
+          })
+
+        return JsonResponse({'logs': data})
+
+

@@ -8,7 +8,6 @@ class Membership extends React.Component {
 
     constructor(props) {
         super(props);
-        localStorage.setItem("location_id", "1");
         this.state = {
             toast: false,
             email: ""
