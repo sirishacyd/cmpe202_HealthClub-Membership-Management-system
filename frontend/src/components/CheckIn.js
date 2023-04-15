@@ -84,10 +84,18 @@ class CheckIn extends React.Component {
     }
 
     doPut(id) {
-        let location= JSON.parse(localStorage.getItem('location'));
+        let location_id;
+        try {
+            let location= JSON.parse(localStorage.getItem('location'));
+            location_id=location.location_id;
+        }
+        catch (err){
+            this.setState({toast: true, message: "Select a location"})
+            return
+        }
         let data = {
             username: id,
-            location_id: location.location_id,
+            location_id: location_id,
         }
 
         fetch(
@@ -112,13 +120,20 @@ class CheckIn extends React.Component {
     }
 
     doPost(id) {
-        let location= JSON.parse(localStorage.getItem('location'));
+        let location_id;
+        try {
+            let location= JSON.parse(localStorage.getItem('location'));
+            location_id=location.location_id;
+        }
+        catch (err){
+            this.setState({toast: true, message: "Select a location"})
+            return
+        }
         let data = {
             username: id,
-            location_id: location.location_id,
+            location_id: location_id,
         }
 
-        console.log(JSON.stringify(data))
         fetch(
             "http://localhost:8000/api/checkin/", {method: 'POST', headers: {
                     'Authorization': 'token ' + localStorage.getItem("token"),

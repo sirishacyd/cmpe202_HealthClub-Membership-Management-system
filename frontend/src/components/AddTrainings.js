@@ -12,15 +12,7 @@ function AddTrainings() {
   const [endTime, setEndTime] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  let location= JSON.parse(localStorage.getItem('location'));
-  const postdata = {
-    instructor_name: instructorName,
-    training_type: trainingType,
-    max_capacity: maxCapacity,
-    location_id : location.location_id,
-    start_time: startTime,
-    end_time: endTime
-  };
+
 
   const config = {
     headers: { 'Authorization': 'token ' + localStorage.getItem("token"), 'Content-Type': 'application/json' }
@@ -34,6 +26,25 @@ function AddTrainings() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    let location_id;
+      try {
+          let location= JSON.parse(localStorage.getItem('location'));
+          location_id=location.location_id;
+      }
+      catch (err){
+          setError('Please select a location.');
+          return
+      }
+
+
+      const postdata = {
+          instructor_name: instructorName,
+          training_type: trainingType,
+          max_capacity: maxCapacity,
+          location_id : location_id,
+          start_time: startTime,
+          end_time: endTime
+      };
     if (instructorName && trainingType && maxCapacity && startTime && endTime ) {
         axios.post(urlPost, postdata, config)
         .then(response => {
