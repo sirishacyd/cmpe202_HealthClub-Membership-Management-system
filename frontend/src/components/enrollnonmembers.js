@@ -109,7 +109,7 @@ const EnrollNonmembers = ({selectedLocation}) => {
     });
 };
 
-  return (
+return (
   <Container className="d-flex justify-content-md-center mt-3">
     <form style={{ width: '1200px' }} onSubmit={handleSubmit}>
     <table>
@@ -123,33 +123,39 @@ const EnrollNonmembers = ({selectedLocation}) => {
         </tr>
       </thead>
       <tbody>
-        {trainings.map((training) => (
-          <tr key={training.training_id}>
-            <td>
-              <input
-                type="checkbox"
-                id={`training-${training.training_id}`}
-                value={training.training_id}
-                checked={selectedTrainings.includes(training.training_id)}
-                onChange={handleTrainingSelect}
-                style={
-                  selectedTrainings.includes(training.training_id)
-                    ? style.checkedCheckbox
-                    : style.checkbox
-                }
-                className={
-                  selectedTrainings.includes(training.training_id)
-                    ? ''
-                    : 'disabledCheckbox'
-                }
-              />
-            </td>
-            <td>{training.training_type}</td>
-            <td>{training.instructor_name}</td>
-            <td>{new Date(training.start_time).toLocaleString()}</td>
-            <td>{new Date(training.end_time).toLocaleString()}</td>
-          </tr>
-        ))}
+        {trainings.map((training) => {
+          const trainingEndTime = new Date(training.end_time);
+          if (trainingEndTime > new Date()) {
+            return (
+              <tr key={training.training_id}>
+                <td>
+                  <input
+                    type="checkbox"
+                    id={`training-${training.training_id}`}
+                    value={training.training_id}
+                    checked={selectedTrainings.includes(training.training_id)}
+                    onChange={handleTrainingSelect}
+                    style={
+                      selectedTrainings.includes(training.training_id)
+                        ? style.checkedCheckbox
+                        : style.checkbox
+                    }
+                    className={
+                      selectedTrainings.includes(training.training_id)
+                        ? ''
+                        : 'disabledCheckbox'
+                    }
+                  />
+                </td>
+                <td>{training.training_type}</td>
+                <td>{training.instructor_name}</td>
+                <td>{new Date(training.start_time).toLocaleString()}</td>
+                <td>{trainingEndTime.toLocaleString()}</td>
+              </tr>
+            );
+          }
+          return null;
+        })}
       </tbody>
     </table>
     <br/>
@@ -186,9 +192,8 @@ const EnrollNonmembers = ({selectedLocation}) => {
     </div>
   </form>
   </Container>
-  
-  );
-};
+);
+    }
 
 
 export default EnrollNonmembers;
