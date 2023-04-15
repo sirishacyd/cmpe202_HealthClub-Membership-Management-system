@@ -39,11 +39,11 @@ function LocationDropdown({ asDropdown }) {
           <option value="">Select a location</option>
           {locations.map(location => (
             <option key={location.location_id} value={location.location_id}>
-              {location.location_address}, {location.location_name}
+              {location.location_name}
             </option>
           ))}
         </select>
-        {selectedLocation && trainings.length > 0 ?
+        {selectedLocation && selectedLocation !== "" && trainings.length > 0 ?
           <table className={styles.table}>
             <thead>
               <tr>
@@ -67,7 +67,7 @@ function LocationDropdown({ asDropdown }) {
             </tbody>
           </table>
           :
-          <p>No classes scheduled at this location.</p>
+          <p>{selectedLocation && selectedLocation !== "" ? "No classes offered at this location." : ""}</p>
         }
       </div>
     );

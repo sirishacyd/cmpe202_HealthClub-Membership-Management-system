@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Container } from 'react-bootstrap';
 
 
 const style = {
@@ -109,7 +110,8 @@ const EnrollNonmembers = ({selectedLocation}) => {
 };
 
   return (
-    <form onSubmit={handleSubmit}>
+  <Container className="d-flex justify-content-md-center mt-3">
+    <form style={{ width: '1200px' }} onSubmit={handleSubmit}>
     <table>
       <thead>
         <tr>
@@ -150,7 +152,8 @@ const EnrollNonmembers = ({selectedLocation}) => {
         ))}
       </tbody>
     </table>
-    <div>
+    <br/>
+    <div align="center">
       <label htmlFor="user-email">User Email:</label>
       <input
         type="email"
@@ -159,8 +162,10 @@ const EnrollNonmembers = ({selectedLocation}) => {
         onChange={(event) => setUserEmail(event.target.value)}
       />
     </div>
+    <br/>
     {myError && <p style={{ color: 'red' }}>{myError}</p>}
     {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+    <div align="center">
     <button
       type="submit"
       disabled={selectedTrainings.length === 0}
@@ -178,7 +183,9 @@ const EnrollNonmembers = ({selectedLocation}) => {
     >
       Enroll
     </button>
+    </div>
   </form>
+  </Container>
   
   );
 };
