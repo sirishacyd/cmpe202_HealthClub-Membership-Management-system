@@ -5,6 +5,7 @@ import {Outlet, Route, Routes} from "react-router-dom";
 import LogHours from "./LogHours";
 import {MemberHome} from "./memberhome";
 import ViewActivities from "./ViewActivities";
+import { Enroll } from './Enroll';
 
 function MemberTopNav() {
     return (
@@ -15,6 +16,7 @@ function MemberTopNav() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link href="/memberhome/home">Home</Nav.Link>
+                            <Nav.Link href="/memberhome/enroll">Enroll</Nav.Link>
                             <Nav.Link href="/memberhome/loghours">Log Hours</Nav.Link>
                             <Nav.Link href="/memberhome/activities">View Activities</Nav.Link>
                         </Nav>
@@ -23,6 +25,7 @@ function MemberTopNav() {
             </Navbar>
             <Routes>
                 <Route path="home" element={<MemberHome/>} />
+                <Route path="enroll" element={<Enroll/>} />
                 <Route path="loghours" element={<LogHours/>}/>
                 <Route path="activities" element={<ViewActivities />} />
             </Routes>
