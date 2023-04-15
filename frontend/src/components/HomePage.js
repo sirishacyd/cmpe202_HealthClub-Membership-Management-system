@@ -22,11 +22,11 @@ function HomePage() {
       <div className="jumbotron">
         <Container>
           <img src={logo} alt="Gym Logo" className="logo" /> {/* Add logo */}
-          <h1>Welcome to Our Gym: Your Fitness Destination</h1>
+          <h1 align="center">Welcome to Our Gym: Your Fitness Destination</h1>
         </Container>
       <Container>
         <Row className="my-4">
-          <Col md={4}>
+          <Col md={6}>
             <Card className="card-color">
               <Card.Body>
                 <Card.Title>Free Trial</Card.Title>
@@ -41,10 +41,10 @@ function HomePage() {
               </Card.Body>
             </Card>
           </Col>
-          <Col md={4}>
+          <Col md={6}>
             <Card className="card-color">
               <Card.Body>
-                <Card.Title>Normal Membership</Card.Title>
+                <Card.Title>Classic Membership</Card.Title>
                 <Card.Text>Price: $80/month</Card.Text>
                 <Card.Text>
                   <ul>
@@ -59,8 +59,8 @@ function HomePage() {
           {/* Add more membership cards here */}
         </Row>
         <Row>
-          <Col className="text-center">
-            <p> Select Location in the Dropdown to see classes scheduled</p>
+          <Col align="center">
+            <p> Select Location in the Dropdown to see classes available</p>
             <LocationDropdown
               aria-label="Select location"
               asDropdown={true}
