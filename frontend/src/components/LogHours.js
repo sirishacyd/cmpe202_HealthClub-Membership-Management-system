@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useMemo } from 'react';
 import { Form, Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
@@ -16,9 +16,10 @@ function LogActivityForm() {
     setError('');
     setSuccess('');
   };
-  const config = {
+
+  const config = useMemo(() => ({
     headers: { 'Authorization': 'token ' + localStorage.getItem("token"), 'Content-Type': 'application/json' }
-  };
+  }), []);
   useEffect(() => {
     localStorage.setItem('username', username);
   }, [username]);
@@ -30,7 +31,7 @@ function LogActivityForm() {
       .catch(error => {
         console.log(error.response.data);
       });
-  }, []);
+  }, [config]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
