@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import styles from './LocationDropdown.module.css';
 
 function LocationDropdown({ asDropdown }) {
+  const defaultLocationId = 1;
   const [locations, setLocations] = useState([]);
-  const [selectedLocation, setSelectedLocation] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState(defaultLocationId);
   const [trainings, setTrainings] = useState([]);
 
   useEffect(() => {

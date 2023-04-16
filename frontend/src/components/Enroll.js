@@ -83,11 +83,11 @@ export const Enroll = () => {
       }, 2000);
     }
   };
-    return (
-      <div>
-     <div className="form-signin mt-5 text-center">
-    <h3 className="advert-text rainbow-text">Check out the amazing trainings available now! Enroll today and don't miss out!</h3>
-  </div>
+  return (
+    <div>
+      <div className="form-signin mt-5 text-center">
+        <h3 className="advert-text rainbow-text">Check out the amazing trainings available now! Enroll today and don't miss out!</h3>
+      </div>
       <div className="d-flex justify-content-md-center mt-3">
         <div className="row side-row">
           <p id="before-table"></p>
@@ -101,63 +101,58 @@ export const Enroll = () => {
               </select>
             ) : null}
           </div>
-            {trainings.length ? (
-              <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
-                <thead>
-                  <tr>
-                    <th>Training Name</th>
-                    <th>Instructor Name</th>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                    {localStorage.getItem('user_type') === 'Member' && <th>Action</th>}
+          {trainings.length ? (
+            <Table striped bordered hover className="react-bootstrap-table" id="dataTable">
+              <thead>
+                <tr>
+                  <th>Training Name</th>
+                  <th>Instructor Name</th>
+                  <th>Start Time</th>
+                  <th>End Time</th>
+                  {localStorage.getItem('user_type') === 'Member' && <th>Action</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {trainings.filter((training) => new Date(training.end_time) > new Date()).map((training) => (
+                  <tr key={training.id}>
+                    <td>{training.training_type}</td>
+                    <td>{training.instructor_name}</td>
+                    <td>{new Date(training.start_time).toLocaleString()}</td>
+                    <td>{new Date(training.end_time).toLocaleString()}</td>
+                    {localStorage.getItem('user_type') === 'Member' && (
+                      <td>
+                        {training.current_capacity < training.max_capacity ? (
+                          <Button variant="success" onClick={() => handleEnroll(training.training_id)}>Enroll</Button>
+                        ) : (
+                          <Button variant="danger" disabled>Max Capacity</Button>
+                        )}
+                      </td>
+                    )}
                   </tr>
-                </thead>
-                <tbody>
-                  {trainings.map((training) => (
-                    <tr key={training.id}>
-                      <td>{training.training_type}</td>
-                      <td>{training.instructor_name}</td>
-                      <td>{new Date(training.start_time).toLocaleString()}</td>
-                      <td>{new Date(training.end_time).toLocaleString()}</td>
-                      {localStorage.getItem('user_type') === 'Member' && (
-                        <td>
-                          {training.current_capacity < training.max_capacity ? (
-                            <Button variant="success" onClick={() => handleEnroll(training.training_id)}>Enroll</Button>
-                          ) : (
-                            <Button variant="danger" disabled>Max Capacity</Button>
-                          )}
-                        </td>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            ) : (
-              <Alert variant="warning" id="empty-trainings-message">No trainings available.</Alert>
-            )}
-          </div>
-        </div>
-        <Container className="mt-3">
-          {((enrollmentMsg !== '') || (error !== '')) && (
-            <>
-              {error !== '' &&
-                <Alert variant="danger" onClose={() => setError('')} dismissible>
-                  {error}
-                </Alert>
-              }
-              {enrollmentMsg !== '' &&
-                <Alert variant="success" onClose={() => setEnrollmentMsg('')} dismissible>
-                  {enrollmentMsg}
-                </Alert>
-              }
-            </>
+                ))}
+              </tbody>
+            </Table>
+          ) : (
+            <Alert variant="warning" id="empty-trainings-message">No trainings available.</Alert>
           )}
-        </Container>
+        </div>
       </div>
-    );
-    
-
-
-  
-
-}
+      <Container className="mt-3">
+        {((enrollmentMsg !== '') || (error !== '')) && (
+          <>
+            {error !== '' &&
+              <Alert variant="danger" onClose={() => setError('')} dismissible>
+                {error}
+              </Alert>
+            }
+            {enrollmentMsg !== '' &&
+              <Alert variant="success" onClose={() => setEnrollmentMsg('')} dismissible>
+                {enrollmentMsg}
+              </Alert>
+            }
+          </>
+        )}
+      </Container>
+    </div>
+  );
+          }
