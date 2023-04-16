@@ -3,7 +3,7 @@ import { Form, Button, Container, Alert } from 'react-bootstrap';
 import axios from 'axios';
 
 function LogActivityForm() {
-  const [username, setUsername] =  useState('');
+  const username = localStorage.getItem('user_id');
   const [activity, setActivity] =  useState('');
   const [duration, setDuration] =  useState('');
   const [distance, setDistance] =  useState('');
@@ -20,6 +20,9 @@ function LogActivityForm() {
     headers: { 'Authorization': 'token ' + localStorage.getItem("token"), 'Content-Type': 'application/json' }
   };
   useEffect(() => {
+    localStorage.setItem('username', username);
+  }, [username]);
+  useEffect(() => {
     axios.get('http://localhost:8000/api/activities/', config)
       .then(response => {
         setActivities(response.data);
@@ -28,6 +31,7 @@ function LogActivityForm() {
         console.log(error.response.data);
       });
   }, []);
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -43,7 +47,7 @@ function LogActivityForm() {
     axios.post(apiUrl, requestData,config)
       .then(response => {
         console.log(response.data);
-        setUsername('');
+        // setUsername('');
         setActivity('');
         setDuration('');
         setDistance('');
@@ -64,10 +68,10 @@ function LogActivityForm() {
       <Form style={{ width: '500px' }} onSubmit={handleSubmit}>
         {error && <Alert variant="danger" dismissible onClose={handleAlertDismiss}>{error}</Alert>}
         {success && <Alert variant="success" dismissible onClose={handleAlertDismiss}>{success}</Alert>}
-        <Form.Group className="d-flex align-items-center">
+        {/* <Form.Group className="d-flex align-items-center">
           <Form.Label className="mr-3">User Name</Form.Label>
           <Form.Control type="text" placeholder="Enter username" value={username} onChange={(event) => setUsername(event.target.value)} />
-        </Form.Group>
+        </Form.Group> */}
 
         <Form.Group className="d-flex align-items-center">
           <Form.Label className="mr-3">Activity</Form.Label>

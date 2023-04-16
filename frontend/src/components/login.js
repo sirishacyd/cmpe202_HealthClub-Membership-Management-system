@@ -23,11 +23,12 @@ export const Login = () => {
                         {'Content-Type': 'application/json'},
                          });
 
-         // Initialize the access token, first_name, user_type in localstorage.      
+         // Initialize the access token, first_name, user_type in localstorage.     
          localStorage.clear();
          localStorage.setItem('token', data.token);
          localStorage.setItem('first_name', data.first_name);
          localStorage.setItem('user_type', data.user_type);
+         localStorage.setItem('user_id', data.user_id);
          console.log(data.token);
          axios.defaults.headers.common['Authorization'] = 
                                          `token ${data['token']}`;
