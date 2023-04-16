@@ -1,7 +1,11 @@
 .jumbotron {
-    background-color:  rgb(204, 184, 148);
-    color: rgb(9, 8, 8);
-  }
+  background-image: url('/src/components/background.jpg');
+  background-color:  rgb(4, 4, 4);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: rgb(222, 217, 217);
+}
   
   .card-color {
     background-color: #7093da;;
@@ -9,19 +13,19 @@
   }
   
   footer {
-    background-color: rgb(17, 16, 16);
+    background-color: rgb(14, 2, 2);
     color: white;
   }
 
   .logo {
-    max-width: 60px; /* Set the maximum width of the logo */
+    max-width: 60px; 
     margin-bottom: 1rem;
   }
 
-  /* .home-background {
-    background-image: url('./background.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    min-height: 100vh;
-  } */
+
+  .select-text {
+    color: white;
+    font-size: 20px;
+    font-display: bold;
+  }
+  
