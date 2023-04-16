@@ -313,6 +313,7 @@ class CustomAuthToken(ObtainAuthToken):
             'token': token.key,
             'first_name': user.first_name,
             'user_type': nUser.user_type,
+            'user_id': nUser.id,
         })
 
 
