@@ -1,5 +1,5 @@
 import React from 'react';
-// import backgroundImage from './background.jpg';
+import backgroundImage from './background.jpg';
 
 import {
   Container,
@@ -16,6 +16,15 @@ import LocationDropdown from './LocationDropdown';
 
 import './home.css';
 import logo from './logo.png'; // Import your logo image file here
+
+const backgroundStyle = {
+  width: '100%',
+  minHeight: '100vh',
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  backgroundSize: 'cover',
+};
 
 function HomePage() {
   return (
@@ -60,7 +69,7 @@ function HomePage() {
         </Row>
         <Row>
           <Col align="center">
-            <p> Select Location in the Dropdown to see classes available</p>
+            {/* <p class="select-text"> Select Location in the Dropdown to see classes available</p> */}
             <LocationDropdown
               aria-label="Select location"
               asDropdown={true}
