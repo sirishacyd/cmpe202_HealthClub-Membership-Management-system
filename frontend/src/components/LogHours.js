@@ -32,7 +32,6 @@ function LogActivityForm() {
       });
   }, []);
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const apiUrl = 'http://localhost:8000/api/logHours/';
@@ -44,35 +43,32 @@ function LogActivityForm() {
       calories: calories,
       timestamp: timestamp,
     };
-    axios.post(apiUrl, requestData,config)
+    if (username && activity && activity && distance && calories && timestamp ) {
+      axios.post(apiUrl, requestData,config)
       .then(response => {
-        console.log(response.data);
-        // setUsername('');
+        // console.log(response.data);
         setActivity('');
         setDuration('');
         setDistance('');
         setCalories('');
         setTimestamp('');
-        // Display success message here
-        setSuccess('Training added successfully.');
-        alert('Activity logged successfully!');
+        setSuccess('Activity Logged successfully.');
       })
       .catch(error => {
-        console.log(error.response.data);
-        alert('Failed to log activity. Please try again later.');
+        // console.log(error.response.data);
+        setError(error.response.data.error);
       });
-  };
+  }else {
+    // Display an error message if any field is not filled
+    setError('Please fill all the fields.');
+  }
+};
 
   return (
     <Container className="d-flex justify-content-md-center mt-3">
       <Form style={{ width: '500px' }} onSubmit={handleSubmit}>
         {error && <Alert variant="danger" dismissible onClose={handleAlertDismiss}>{error}</Alert>}
         {success && <Alert variant="success" dismissible onClose={handleAlertDismiss}>{success}</Alert>}
-        {/* <Form.Group className="d-flex align-items-center">
-          <Form.Label className="mr-3">User Name</Form.Label>
-          <Form.Control type="text" placeholder="Enter username" value={username} onChange={(event) => setUsername(event.target.value)} />
-        </Form.Group> */}
-
         <Form.Group className="d-flex align-items-center">
           <Form.Label className="mr-3">Activity</Form.Label>
             <Form.Select value={activity} onChange={(event) => setActivity(event.target.value)}>
