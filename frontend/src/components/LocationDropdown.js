@@ -37,7 +37,7 @@ function LocationDropdown({ asDropdown }) {
     return (
       <div>
         <select value={selectedLocation} onChange={handleSelectChange} className={styles.dropdown}>
-          <option value="">Select a location</option>
+          <option value="">Select Location to see classes available</option>
           {locations.map(location => (
             <option key={location.location_id} value={location.location_id}>
               {location.location_name}
