@@ -41,7 +41,22 @@ export const AdminHome = () => {
          else {window.location.href = '/'};
      }, []);
      return (
-             <div className="form-signin mt-5 text-center">
-                 <h3>Hi {message}. You are a Admin. Welcome to AdminHome</h3>
-             </div>
+    <div className="container-fluid">
+      <div className="row">
+        <div className="col-1 bg-light">
+          <nav className="nav flex-column mt-5">
+            <a className="nav-link active text-dark" href="#">Link 1</a>
+            <a className="nav-link text-dark" href="#">Link 2</a>
+            <a className="nav-link text-dark" href="#">Link 3</a>
+            <a className="nav-link text-dark" href="#">Link 4</a>
+            <a className="nav-link text-dark" href="#">Link 5</a>
+          </nav>
+        </div>
+        <div className="col-11">
+          <div className="form-signin mt-5 text-center">
+            <h3>Hi {message}. You are an Admin. Welcome to AdminHome</h3>
+          </div>
+        </div>
+      </div>
+    </div>
 )}
