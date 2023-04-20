@@ -4,7 +4,7 @@ from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraini
 # router = DefaultRouter()
 # router.register(r'', UserLogViewSet)
 from .views import ClassSchedulesListView, UserLogViewSet, UserViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, \
-    LocationList, LocationDetails, ViewMemberTrainingEnrollment, ActivityList, ActivityLogSet
+    LocationList, LocationDetails, ViewMemberTrainingEnrollment, ActivityList, ActivityLogSet,enrollmentStats
 
 urlpatterns = [
     path('api/addClassSchedules/', ClassSchedulesListView.as_view()),
@@ -33,5 +33,7 @@ urlpatterns = [
     path('api/viewmembertrainingenrollment/', ViewMemberTrainingEnrollment.as_view({'get': 'list'})),
 
     path('api/getActivityLog/', ActivityLogSet.as_view({'get': 'getActivityLog'})),
+    #API endpoint for Enrollment Stats
+    path('api/enrollmentstats/', enrollmentStats.as_view({'get': 'getEnrollmentStats'})),
 
 ]
