@@ -1,8 +1,9 @@
+from django.db.models import Count
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http.response import JsonResponse
 from .models import Training, Enrollments, Activity
-from .serializers import TrainingSerializer, EnrollmentsSerializer, ActivityLogSerializer,ActivitySerializer
+from .serializers import TrainingSerializer, EnrollmentsSerializer, ActivityLogSerializer, ActivitySerializer
 from rest_framework import viewsets, status, generics
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -13,7 +14,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import TrainingSerializer
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from .models import User_log, User, Location, ActivityLog,Activity
+from .models import User_log, User, Location, ActivityLog, Activity
 from .serializers import UserLogSerializer, UserSerializer, LocationSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
@@ -107,10 +108,10 @@ class SignupSet(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def signup(self, request):
         try:
-         serializer = UserSerializer(data=request.data)
-         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
         except:
             return Response({'error': 'Invalid email address!'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -120,22 +121,23 @@ class SignupSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['put'])
-    def updateMembership(self,request,user_id):
+    def updateMembership(self, request, user_id):
         try:
-         userObject=User.objects.get(id=user_id)
-         if(userObject.user_type=='Member'):
-            return Response({'error': 'User is already a member!'},
-                            status=status.HTTP_400_BAD_REQUEST)
-         elif(userObject.user_type=='Admin'):
-             return Response({'error': 'User is an employee!'},
-                            status=status.HTTP_400_BAD_REQUEST)
-         else:
-            userObject.user_type='Member'
-            userObject.save()
-            serializer=UserSerializer(userObject)
-            return Response(serializer.data,status=status.HTTP_200_OK)
+            userObject = User.objects.get(id=user_id)
+            if (userObject.user_type == 'Member'):
+                return Response({'error': 'User is already a member!'},
+                                status=status.HTTP_400_BAD_REQUEST)
+            elif (userObject.user_type == 'Admin'):
+                return Response({'error': 'User is an employee!'},
+                                status=status.HTTP_400_BAD_REQUEST)
+            else:
+                userObject.user_type = 'Member'
+                userObject.save()
+                serializer = UserSerializer(userObject)
+                return Response(serializer.data, status=status.HTTP_200_OK)
         except:
             return Response({'error': 'User does not exist!'}, status=status.HTTP_400_BAD_REQUEST)
+
 
 class signUpTraining(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
@@ -164,49 +166,48 @@ class signUpTraining(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    
+
     @action(detail=False, methods=['post'])
     def signUpnonmembersfortraining(self, request):
-    # Check if the user is an admin
+        # Check if the user is an admin
         permission_classes = [IsAdminUser]
 
-    # Get the username and training_id from the request data
+        # Get the username and training_id from the request data
         username = request.data.get('username')
         training_id = request.data.get('training_id')
 
-    # Check if the user is already enrolled in this training
+        # Check if the user is already enrolled in this training
         getUserObj = User.objects.filter(email=username)
         print(getUserObj)
-        username = str(getUserObj.first().id) 
+        username = str(getUserObj.first().id)
         userTrainingObjects = Enrollments.objects.filter(username=username)
         userTrainingIDs = [i.training_id.training_id for i in userTrainingObjects]
         if int(training_id) in userTrainingIDs:
             return Response({'error': 'User is already registered for this training!'},
-                        status=status.HTTP_400_BAD_REQUEST)
+                            status=status.HTTP_400_BAD_REQUEST)
 
-    # Check if the training session is at capacity
+        # Check if the training session is at capacity
         catch_training = Training.objects.get(pk=int(training_id))
         if catch_training.current_capacity >= catch_training.max_capacity:
             return Response({
-            'error': 'Capacity for the training session is full'},
-            status=status.HTTP_400_BAD_REQUEST)
+                'error': 'Capacity for the training session is full'},
+                status=status.HTTP_400_BAD_REQUEST)
 
-    # Check if the user's trial membership has expired
+        # Check if the user's trial membership has expired
         user = User.objects.get(id=username)
         current_time = datetime.now(pytz.utc)
         sub_expiry_date = user.date_joined + timedelta(days=30)
         if (current_time > sub_expiry_date):
             return Response({
-            'error': 'User trial membership has expired!'},
-            status=status.HTTP_400_BAD_REQUEST)
-        
+                'error': 'User trial membership has expired!'},
+                status=status.HTTP_400_BAD_REQUEST)
 
-    # Check if the training session is scheduled after the user's trial membership expiration
+        # Check if the training session is scheduled after the user's trial membership expiration
         if catch_training.start_time >= sub_expiry_date:
             return Response({
-            'error': 'Training session is scheduled after user trial membership expiration!'},
-            status=status.HTTP_400_BAD_REQUEST)
-        
+                'error': 'Training session is scheduled after user trial membership expiration!'},
+                status=status.HTTP_400_BAD_REQUEST)
+
         catch_training.current_capacity += 1
         catch_training.save()
         request.data["username"] = username
@@ -216,9 +217,6 @@ class signUpTraining(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-       
-
-        
 
 class cancelEnrollment(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
@@ -275,7 +273,8 @@ class ViewMemberTrainingEnrollment(viewsets.ModelViewSet):
         for training in trainings:
             location_name = training.location_id.location_name
             location_address = training.location_id.location_address
-            start_time = training.start_time.astimezone(pytz.timezone('America/Los_Angeles')).strftime("%Y-%m-%d %I:%M %p")
+            start_time = training.start_time.astimezone(pytz.timezone('America/Los_Angeles')).strftime(
+                "%Y-%m-%d %I:%M %p")
             end_time = training.end_time.astimezone(pytz.timezone('America/Los_Angeles')).strftime("%Y-%m-%d %I:%M %p")
             memberdetails.append({
                 'Training_id': training.training_id,
@@ -329,7 +328,6 @@ class LocationList(viewsets.ModelViewSet):
         return Response(serializer.data)
 
 
-        
 class LocationDetails(viewsets.ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
@@ -342,6 +340,7 @@ class LocationDetails(viewsets.ModelViewSet):
         serializer = self.get_serializer(location_details, many=True)
         return Response(serializer.data)
 
+
 class ActivityList(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
@@ -352,7 +351,8 @@ class ActivityList(viewsets.ModelViewSet):
         activities = self.get_queryset()
         serializer = self.get_serializer(activities, many=True)
         return Response(serializer.data)
- 
+
+
 class ActivityDetails(viewsets.ModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
@@ -361,9 +361,10 @@ class ActivityDetails(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def activity_details(self, request):
         activity_details = self.filter_queryset(self.get_queryset())
-        activity_details = activity_details.values('id','type')
+        activity_details = activity_details.values('id', 'type')
         serializer = self.get_serializer(activity_details, many=True)
         return Response(serializer.data)
+
 
 class ActivityLogView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]  # Or other permissions you want to set
@@ -376,6 +377,7 @@ class ActivityLogView(viewsets.ModelViewSet):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -383,7 +385,7 @@ class UserViewSet(viewsets.ModelViewSet):
 
     def get(self, request, email):
         try:
-            userObject=User.objects.get(username=email)
+            userObject = User.objects.get(username=email)
             response_data = {}
             response_data['id'] = userObject.id
             response_data['first_name'] = userObject.first_name
@@ -391,47 +393,63 @@ class UserViewSet(viewsets.ModelViewSet):
             return JsonResponse(response_data)
         except:
             return Response({'error': 'User does not exist!'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
 
 class ActivityLogSet(viewsets.ModelViewSet):
-    queryset= ActivityLog.objects.all()
-    serializer_class=ActivityLogSerializer
-    permission_classes=[IsAuthenticated]
+    queryset = ActivityLog.objects.all()
+    serializer_class = ActivityLogSerializer
+    permission_classes = [IsAuthenticated]
+
     @action(detail=False, methods=['get'])
-    def getActivityLog(self,request):
+    def getActivityLog(self, request):
         options = request.query_params.get('options', '')
         try:
-            if options== '90_days':
+            if options == '90_days':
                 today = timezone.now()
                 past_period = today - timedelta(days=90)
                 logs = ActivityLog.objects.filter(username=request.user.id, timestamp__gte=past_period)
-            elif options== 'week':
+            elif options == 'week':
                 today = timezone.now()
                 past_period = today - timedelta(weeks=1)
                 logs = ActivityLog.objects.filter(username=request.user.id, timestamp__gte=past_period)
-            elif options== 'month':
+            elif options == 'month':
                 today = timezone.now()
                 past_period = today - timedelta(weeks=4)
                 logs = ActivityLog.objects.filter(username=request.user.id, timestamp__gte=past_period)
             else:
-                 return Response({'error':'Invalid option'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': 'Invalid option'}, status=status.HTTP_400_BAD_REQUEST)
 
         except:
-             return Response({'error':'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
-             
+            return Response({'error': 'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
+
         data = []
-        if(logs==None):
+        if (logs == None):
             return Response({'No logs found'}, status=status.HTTP_200_OK)
         for log in logs:
-          data.append({
-            'activity':log.activity.type,
-            'duration': log.duration,
-            'calories':log.calories,
-            'timestamp': log.timestamp,
-            'distance':log.distance
-            
-          })
+            data.append({
+                'activity': log.activity.type,
+                'duration': log.duration,
+                'calories': log.calories,
+                'timestamp': log.timestamp,
+                'distance': log.distance
+
+            })
 
         return JsonResponse({'logs': data})
 
+
+# Added for Admin Dashboard to get the count of most frequently - least frequently used equipment by location
+
+class EquipmentViewSet(viewsets.ViewSet):
+    queryset = ActivityLog.objects.all()
+    serializer_class = ActivityLogSerializer
+    permission_classes = [IsAdminUser]
+
+    @action(detail=True, methods=['get'])
+    def equipmenttypes(self, request, pk=None):
+        location_id = pk
+        activity_logs = ActivityLog.objects.filter(username__user_log__location_id=location_id)
+        activity_counts = activity_logs.values('activity', 'activity__type').annotate(count=Count('activity')).order_by('-count')
+        activity_types = [{'type': count['activity__type'], 'count': count['count']} for count in activity_counts]
+        return Response(activity_types)
 
