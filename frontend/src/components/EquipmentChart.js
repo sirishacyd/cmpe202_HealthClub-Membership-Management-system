@@ -49,17 +49,18 @@ function EquipmentChart({ locationId }) {
         'rgb(54, 162, 235)',
         'rgb(153, 102, 255)',
         ],
-        borderWidth: 1,
+        borderWidth: 2,
       }
     ],
   };
 
 return (
-  <div style={{width: '850px', height: '350px', margin: '0 auto'}}>
+  <div style={{width: '850px', height: '365px', margin: '0 auto'}}>
+  <p style={{fontSize: '22px'}} align="center">Equipment Usage Statistics</p>
     {activityTypes.length > 0 && <Bar data={chartData} />}
     {activityTypes.length === 0 && (
       <Alert variant="info" className="text-center">
-        No Equipment Usage At this Location as of Now
+        Equipment Usage Statistics is currently unavailable at this Location
       </Alert>
     )}
   </div>

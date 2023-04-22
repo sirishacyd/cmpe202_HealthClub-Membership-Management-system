@@ -119,7 +119,7 @@ export const AdminHome = ({selectedLocation}) => {
     zIndex: 1,
   }}>Enrollment Statistics based on Training type</p>
 </div>
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '55vh' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginRight: '30px' }}>
               <label htmlFor="start-date">Start Date:</label>
               <input type="datetime-local" id="start-date" value={moment(startDate).format('YYYY-MM-DDTHH:mm')} onChange={(e) => setStartDate(moment(e.target.value).format())} />
