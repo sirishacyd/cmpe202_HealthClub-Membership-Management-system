@@ -26,7 +26,6 @@ from datetime import datetime, timedelta
 import pytz
 from django.db.models import Count
 
-
 # Create your views here.
 
 class ClassSchedulesListView(APIView):
@@ -467,9 +466,7 @@ class ActivityLogSet(viewsets.ModelViewSet):
             })
 
         return JsonResponse({'logs': data})
-
-
-# Added for Admin Dashboard to get the count of most frequently - least frequently used equipment by location
+    
 
 class EquipmentViewSet(viewsets.ViewSet):
     queryset = ActivityLog.objects.all()
@@ -483,4 +480,66 @@ class EquipmentViewSet(viewsets.ViewSet):
         activity_counts = activity_logs.values('activity', 'activity__type').annotate(count=Count('activity')).order_by('-count')
         activity_types = [{'type': count['activity__type'], 'count': count['count']} for count in activity_counts]
         return Response(activity_types)
+
+
+class VisitorCountByHourViewSet(viewsets.ModelViewSet):
+    queryset = User_log.objects.all()
+    serializer_class = UserLogSerializer
+    permission_classes = [IsAdminUser]
+
+    def list(self,request,location_id):
+        # Get the query parameters from the request
+        time_period = self.request.query_params.get('time_period')
+        options=self.request.query_params.get('options')
+        selected_date = self.request.query_params.get('selected_date')
+        if(location_id=='none'):
+          return Response({"error": "Please select a location"},
+                                status=status.HTTP_400_BAD_REQUEST)  
+        # Filter user logs based on location
+        user_logs = User_log.objects.filter(location_id=location_id)
+        if time_period=='weekday' or time_period =='weekend':
+            if not options:
+                return Response({"error": "Please select a time range"},
+                                status=status.HTTP_400_BAD_REQUEST)  
+            elif options== '90_days':
+                today = timezone.now()
+                past_period = today - timedelta(days=90)
+                user_logs = user_logs.filter(checkin_time__gte=past_period)
+            elif options== 'week':
+                today = timezone.now()
+                past_period = today - timedelta(weeks=1)
+                user_logs = user_logs.filter(checkin_time__gte=past_period)
+            elif options== 'month':
+                today = timezone.now()
+                past_period = today - timedelta(weeks=4)
+                user_logs = user_logs.filter(checkin_time__gte=past_period)
+
+        # Filter user logs based on time period
+        if time_period == 'weekday':
+            user_logs = user_logs.filter(checkin_time__week_day__range=(2, 6))  # Monday to Friday
+        elif time_period == 'weekend':
+            user_logs = user_logs.filter(checkin_time__week_day__in=[1, 7])
+        elif time_period == 'day':
+            if not selected_date:
+                return Response({"error": "Please provide a selected_date for 'day' time period"},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            # Convert selected_date string to datetime object
+            try:
+                selected_date = datetime.strptime(selected_date, '%Y-%m-%d').date()
+            except ValueError:
+                return Response({"error": "Invalid date format for selected_date"},
+                                status=status.HTTP_400_BAD_REQUEST)
+
+            user_logs = user_logs.filter(checkin_time__date=selected_date)
+        # Count the number of visitors by the hour
+        visitor_counts = user_logs.values('checkin_time__hour').annotate(visitor_count=Count('*')).order_by('checkin_time__hour')
+        results = []
+        for count in visitor_counts:
+         result = {
+            'hour': count['checkin_time__hour'],  
+            'visitor_count': count['visitor_count']
+         }
+         results.append(result)
+        return Response(results, status=status.HTTP_200_OK)
 
