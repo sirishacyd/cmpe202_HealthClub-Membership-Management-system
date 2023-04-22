@@ -3,6 +3,7 @@ import axios from "axios";
 import {useState} from "react";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import gymImage from './gym.jpg';
 // Define the Login function.
 export const Login = () => {
      const [username, setUsername] = useState('');
@@ -49,54 +50,82 @@ export const Login = () => {
                          }  
                         }                      
     return(
+    
       <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '85vh',
-        backgroundColor: '#F0F8FF',
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        backgroundImage: `url(${gymImage})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
       }}>
-        <div className="Auth-form-container" style={{
-          maxWidth: '400px',
-          width: '100%',
-          backgroundColor: 'white', // Set container background color to white
-      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.1)', // Add shadow to container
-      padding: '1rem', 
-        }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            //width: "50%",
+            opacity:0.9,
+            backgroundColor: "white",
+            boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
+            padding: "1rem",
+          }}
+          className="Auth-form-container"
+        >
           <form className="Auth-form" onSubmit={submit}>
             <div className="Auth-form-content">
               <h3 className="Auth-form-title">
-              <FontAwesomeIcon icon={faUser} className="me-3" style={{ marginRight: '2rem' }} />
-  Welcome ! Login here
+                <FontAwesomeIcon
+                  icon={faUser}
+                  className="me-3"
+                  style={{ marginRight: "2rem" }}
+                />
+                Welcome! Login here
               </h3>
-              {error && <div className="alert alert-danger">{error}</div>}
+              {error && (
+                <div className="alert alert-danger">{error}</div>
+              )}
               <div className="form-group mt-3">
                 <label>Email Address</label>
-                <input className="form-control mt-1" 
-                  placeholder="Enter Your Email Address here" 
-                  name='username'  
-                  type='text' value={username}
-                  required 
-                  onChange={e => setUsername(e.target.value)}/>
+                <input
+                  className="form-control mt-1"
+                  placeholder="Enter Your Email Address here"
+                  name="username"
+                  type="text"
+                  value={username}
+                  required
+                  onChange={(e) => setUsername(e.target.value)}
+                />
               </div>
               <div className="form-group mt-3">
                 <label>Password</label>
-                <input name='password' 
-                  type="password"     
+                <input
+                  name="password"
+                  type="password"
                   className="form-control mt-1"
                   placeholder="Enter password"
                   value={password}
                   required
-                  onChange={e => setPassword(e.target.value)}
-                  style={{ marginBottom: '1rem' }}/>
+                  onChange={(e) => setPassword(e.target.value)}
+                  style={{ marginBottom: "1rem" }}
+                />
               </div>
               <div className="d-grid gap-6 mt-3" class="row justify-content-center">
-                <button type="submit" 
-                  className="btn btn-primary" style={{ backgroundColor: '#4B0082' }}>Login</button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  style={{ backgroundColor: "#4B0082" }}
+                >
+                  Login
+                </button>
               </div>
             </div>
           </form>
         </div>
       </div>
-     )
+      
+      );
+      
 }
