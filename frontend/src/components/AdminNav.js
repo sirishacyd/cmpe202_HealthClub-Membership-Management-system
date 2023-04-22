@@ -35,7 +35,6 @@ function TopNav() {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <Nav.Link href="/adminhome/home" style={{color: '#333'}}>Home</Nav.Link>
-                            <Nav.Link href="/adminhome/equipmentdashboard"style={{color: '#333'}}>Equipment Dashboard</Nav.Link>
                             <Nav.Link href="/adminhome/check-in"style={{color: '#333'}}>Check In</Nav.Link>
                             <Nav.Link href="/adminhome/manage"style={{color: '#333'}}>Manage</Nav.Link>
                             <Nav.Link href="/adminhome/addtraining"style={{color: '#333'}}>Add Trainings</Nav.Link>
