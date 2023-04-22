@@ -9,6 +9,7 @@ const VisitorCountChart = ({ selectedLocation }) => {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split("T")[0]);
     const [selectedOption, setSelectedOption] = useState("90_days"); // Add state for options
     const [showOptionDropdown, setShowOptionDropdown] = useState(true); // state to show/hide option dropdown
+    const [showHeader, setShowHeader] = useState("Visitor count by the hour")
 
     useEffect(() => {
         // Retrieve location_id from local storage
@@ -54,12 +55,15 @@ const VisitorCountChart = ({ selectedLocation }) => {
                 // Set chart data in state
                 setChartData({ labels, values });
             })
-            .catch((error) => console.error("Error fetching data:", error));
+            .catch((error) => {
+                console.error("Error fetching data:", error)
+                setShowHeader("Oops! No data to show! We may have been closed?!")
+            });
     }, [timePeriod, selectedDate, selectedLocation, selectedOption]);
 
     useEffect(() => {
         // Create chart after chartData is set
-        if (chartData) {
+        if (chartData && chartData.labels.length !== 0) {
             // Get canvas element and context
             const canvas = document.getElementById("visitorCountChart");
             const ctx = canvas.getContext("2d");
@@ -73,8 +77,8 @@ const VisitorCountChart = ({ selectedLocation }) => {
                         {
                             label: "Visitor Count",
                             data: chartData.values,
-                            backgroundColor: "rgba(75, 192, 192, 0.2)",
-                            borderColor: "rgba(75, 192, 192, 1)",
+                            backgroundColor: "rgba(255,0,0,0.2)",
+                            borderColor: "rgba(255,0,0)",
                             borderWidth: 1,
                         },
                     ],
@@ -96,48 +100,25 @@ const VisitorCountChart = ({ selectedLocation }) => {
                     },
                 },
             });
+            setShowHeader("Visitor count by the hour")
             return () => {
                 console.log(chartData)
                 myChart.destroy()
             }
+        } else {
+            setShowHeader("Oops! No data to show! We may have been closed?!")
         }
     }, [chartData]);
-
-    // Handler for time period select change
-    const handleTimePeriodChange = (e) => {
-        setTimePeriod(e.target.value);
-        setShowOptionDropdown(e.target.value !== "day"); // Show/hide option dropdown based on selected value
-    };
-
-// Handler for options select change
-    const handleOptionsChange = (e) => {
-        setSelectedOption(e.target.value);
-    };
-
-// Handler for selected date input change
-    const handleSelectedDateChange = (e) => {
-        setSelectedDate(e.target.value);
-    };
-
-// Handler for submit button click
-    const handleSubmit = () => {
-        // Perform actions on form submission
-    };
-
-// Handler for reset button click
-    const handleReset = () => {
-        // Reset form values
-        setTimePeriod("weekday");
-        setShowOptionDropdown(false);
-        setSelectedOption("90_days");
-        setSelectedDate("");
-    };
 
 
     return (
         <div>
+            <p align='center' style={{
+                fontSize: '22px',
+                zIndex: 1,
+            }}>{showHeader}</p>
             <div>
-                <label htmlFor="timePeriod">Time Period:</label>
+                <label htmlFor="timePeriod">Time Period:</label> {' '}
                 <select
                     id="timePeriod"
                     name="timePeriod"
@@ -154,7 +135,7 @@ const VisitorCountChart = ({ selectedLocation }) => {
             </div>
             {showOptionDropdown && (
                 <div>
-                    <label htmlFor="options">Options:</label>
+                    <label htmlFor="options">Options:</label> {' '}
                     <select
                         id="options"
                         name="options"

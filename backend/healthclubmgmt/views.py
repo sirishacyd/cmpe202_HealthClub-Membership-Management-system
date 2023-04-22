@@ -536,9 +536,11 @@ class VisitorCountByHourViewSet(viewsets.ModelViewSet):
         visitor_counts = user_logs.values('checkin_time__hour').annotate(visitor_count=Count('*')).order_by('checkin_time__hour')
         results = []
         for count in visitor_counts:
+         hour = count['checkin_time__hour']
+         hour_12 = datetime.strptime(str(hour), '%H').strftime('%I %p')
          result = {
-            'hour': count['checkin_time__hour'],  
-            'visitor_count': count['visitor_count']
+        'hour': hour_12,
+        'visitor_count': count['visitor_count']
          }
          results.append(result)
         return Response(results, status=status.HTTP_200_OK)
