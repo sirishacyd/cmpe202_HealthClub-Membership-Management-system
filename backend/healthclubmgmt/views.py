@@ -24,6 +24,7 @@ from datetime import datetime
 from django.utils import timezone
 from datetime import datetime, timedelta
 import pytz
+from django.db.models import Count
 
 
 # Create your views here.
@@ -217,6 +218,36 @@ class signUpTraining(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+##
+class enrollmentStats(viewsets.ModelViewSet):
+    @action(detail=False, methods=['get'])
+    def getEnrollmentStats(self, request, *args, **kwargs):
+        permission_classes = [IsAdminUser]
+        start_time_str = request.query_params.get('start_time')
+        end_time_str = request.query_params.get('end_time')
+        location_id = request.query_params.get('location_id')
+        
+        if not start_time_str or not end_time_str or not location_id:
+            return Response({'error': 'start_time, end_time, and location_id are required parameters'})
+        
+        start_time = timezone.datetime.fromisoformat(start_time_str).replace(tzinfo=pytz.utc)
+        end_time = timezone.datetime.fromisoformat(end_time_str).replace(tzinfo=pytz.utc)
+        
+        # Query enrollments based on start time range and location_id
+        enrollment_counts = Enrollments.objects.filter(
+            training_id__start_time__range=(start_time, end_time), 
+            training_id__location_id__location_id=location_id
+        ).values('training_type').annotate(count=Count('training_type'))
+        
+        # Convert the queryset to a list of dictionaries for JSON serialization
+        enrollment_counts_list = list(enrollment_counts)
+        
+        return Response(enrollment_counts_list)
+
+
+##     
+
+        
 
 class cancelEnrollment(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
