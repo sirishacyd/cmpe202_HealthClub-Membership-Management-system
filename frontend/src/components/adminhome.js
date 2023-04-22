@@ -11,6 +11,7 @@ import Membership from "./Membership";
 import AddTrainings from "./AddTrainings";
 import SignUpUsers from "./SignUpUsers";
 import AdminNav from "./AdminNav";
+import EquipmentChart from './EquipmentChart';
 // Define the Login function.
 export const AdminHome = () => {
      const [message, setMessage] = useState('');

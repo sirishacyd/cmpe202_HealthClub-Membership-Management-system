@@ -4,7 +4,7 @@ from .views import ClassSchedulesListView, SignupSet, signUpTraining, viewTraini
 # router = DefaultRouter()
 # router.register(r'', UserLogViewSet)
 from .views import ClassSchedulesListView, UserLogViewSet, UserViewSet, SignupSet, TokenRevokeSet, CustomAuthToken, \
-    LocationList, LocationDetails, ViewMemberTrainingEnrollment, ActivityList, ActivityLogSet,enrollmentStats
+    LocationList, LocationDetails, ViewMemberTrainingEnrollment, ActivityList, ActivityLogSet, EquipmentViewSet,enrollmentStats
 
 urlpatterns = [
     path('api/addClassSchedules/', ClassSchedulesListView.as_view()),
@@ -28,12 +28,11 @@ urlpatterns = [
     # url endpoint to cancel enrollments for trainings--<int:pk> below is the training id--
     path('api/cancelenrollment/<int:pk>', cancelEnrollment.as_view({'delete': 'destroy'})),
     path('api/logHours/', ActivityLogView.as_view({'post': 'create'})),
-
     # API endpoint for view member specific training enrollment details
     path('api/viewmembertrainingenrollment/', ViewMemberTrainingEnrollment.as_view({'get': 'list'})),
-
     path('api/getActivityLog/', ActivityLogSet.as_view({'get': 'getActivityLog'})),
-    #API endpoint for Enrollment Stats
-    path('api/enrollmentstats/', enrollmentStats.as_view({'get': 'getEnrollmentStats'})),
+    path('api/equipmenttypes/<int:pk>', EquipmentViewSet.as_view({'get': 'equipmenttypes'})),
+    #url endpoint get enrollment statistics
+    path('api/enrollmentstats', enrollmentStats.as_view({'get':'getEnrollmentStats'}))
 
 ]
