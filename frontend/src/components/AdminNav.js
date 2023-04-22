@@ -8,6 +8,7 @@ import AddTrainings from "./AddTrainings";
 import SignUpUsers from "./SignUpUsers";
 import {AdminHome} from "./adminhome";
 import EnrollNonmembers from './enrollnonmembers';
+import EquipmentChart from './EquipmentChart';
 
 function TopNav() {
     const [selectedLocation, setSelectedLocation] = useState(JSON.parse(localStorage.getItem('location')) || {});
@@ -38,6 +39,7 @@ function TopNav() {
                             <Nav.Link href="/adminhome/addtraining">Add Trainings</Nav.Link>
                             <Nav.Link href="/adminhome/signupusers">Sign Up</Nav.Link>
                             <Nav.Link href="/adminhome/enrollnonmembers">Enroll</Nav.Link>
+                            <Nav.Link href="/adminhome/equipmentdashboard">Equipment Dashboard</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
                             <NavDropdown title={selectedLocation.location_name || "Location"} id="basic-nav-dropdown" onSelect={handleSelect}>
@@ -56,6 +58,7 @@ function TopNav() {
                 <Route path="addtraining" element={<AddTrainings/>}/>
                 <Route path="signupusers" element={<SignUpUsers/>}/>
                 <Route path="enrollnonmembers" element={<EnrollNonmembers selectedLocation={selectedLocation}/>}/>
+                <Route path="equipmentdashboard" element={<EquipmentChart locationId={selectedLocation.location_id}/>}/>
             </Routes>
             <Outlet />
         </>
