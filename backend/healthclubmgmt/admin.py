@@ -12,7 +12,7 @@ class UserAdmin(admin.ModelAdmin):
 
 
 class User_logAdmin(admin.ModelAdmin):
-    list_display = ('username', 'checkin_time', 'checkout_time')
+    list_display = ('username', 'checkin_time', 'checkout_time', 'location_id')
 
 
 class LocationAdmin(admin.ModelAdmin):
