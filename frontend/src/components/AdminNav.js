@@ -10,6 +10,7 @@ import {AdminHome} from "./adminhome";
 import EnrollNonmembers from './enrollnonmembers';
 import EquipmentChart from './EquipmentChart';
 
+
 function TopNav() {
     const [selectedLocation, setSelectedLocation] = useState(JSON.parse(localStorage.getItem('location')) || {});
     const [locations, setLocations] = useState([]);
@@ -33,13 +34,13 @@ function TopNav() {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/adminhome/home">Home</Nav.Link>
-                            <Nav.Link href="/adminhome/check-in">Check In</Nav.Link>
-                            <Nav.Link href="/adminhome/manage">Manage</Nav.Link>
-                            <Nav.Link href="/adminhome/addtraining">Add Trainings</Nav.Link>
-                            <Nav.Link href="/adminhome/signupusers">Sign Up</Nav.Link>
-                            <Nav.Link href="/adminhome/enrollnonmembers">Enroll</Nav.Link>
-                            <Nav.Link href="/adminhome/equipmentdashboard">Equipment Dashboard</Nav.Link>
+                            <Nav.Link href="/adminhome/home" style={{color: '#333'}}>Home</Nav.Link>
+                            <Nav.Link href="/adminhome/check-in"style={{color: '#333'}}>Check In</Nav.Link>
+                            <Nav.Link href="/adminhome/manage"style={{color: '#333'}}>Manage</Nav.Link>
+                            <Nav.Link href="/adminhome/addtraining"style={{color: '#333'}}>Add Trainings</Nav.Link>
+                            <Nav.Link href="/adminhome/signupusers"style={{color: '#333'}}>Sign Up</Nav.Link>
+                            <Nav.Link href="/adminhome/enrollnonmembers"style={{color: '#333'}}>Enroll</Nav.Link>
+                            <Nav.Link href="/adminhome/equipmentdashboard"style={{color: '#333'}}>Equipment Dashboard</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
                             <NavDropdown title={selectedLocation.location_name || "Location"} id="basic-nav-dropdown" onSelect={handleSelect}>
@@ -52,7 +53,7 @@ function TopNav() {
                 </Container>
             </Navbar>
             <Routes>
-                <Route path="home" element={<AdminHome />} />
+                <Route path="home" element={<AdminHome selectedLocation={selectedLocation} />} />
                 <Route path="check-in" element={<CheckIn/>}/>
                 <Route path="manage" element={<Membership/>}/>
                 <Route path="addtraining" element={<AddTrainings/>}/>

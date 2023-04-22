@@ -33,6 +33,6 @@ urlpatterns = [
     path('api/getActivityLog/', ActivityLogSet.as_view({'get': 'getActivityLog'})),
     path('api/equipmenttypes/<int:pk>', EquipmentViewSet.as_view({'get': 'equipmenttypes'})),
     #url endpoint get enrollment statistics
-    path('api/enrollmentstats', enrollmentStats.as_view({'get':'getEnrollmentStats'}))
+    path('api/enrollmentstats/', enrollmentStats.as_view({'get':'getEnrollmentStats'}))
 
 ]
