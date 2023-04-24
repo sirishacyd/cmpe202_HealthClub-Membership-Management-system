@@ -1,87 +1,106 @@
 import React, { useState, useEffect } from 'react';
-// import './HoursCount.css';
 import { Bar } from 'react-chartjs-2';
 import axios from 'axios';
-import Chart from 'chart.js/auto';
-import { Alert } from 'react-bootstrap';
+import { Alert, Form } from 'react-bootstrap';
+
 function HoursCount({ locationId }) {
-    const [hoursData, setHoursData] = useState([]);
+  const [hoursData, setHoursData] = useState({});
+  const [selectedChart, setSelectedChart] = useState('daily');
 
-    useEffect(() => {
-        async function fetchHoursData() {
-            try {
-                const {data} = await axios.get(`http://127.0.0.1:8000/api/loghoursCount/${locationId}`,{
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization' : `token ${localStorage.getItem('token')}`,
-                         "Access-Control-Allow-Origin": "*"
-                    }
-                });
-                console.log(data)
-                setHoursData(data[0]);
-            } catch (error) {
-                console.error('Error fetching hours data:', error);
-                setHoursData([]);
-            }
-        }
-        fetchHoursData();
-    }, [locationId]);
-
-    if (!hoursData) {
-        return <div>Loading...</div>;
+  useEffect(() => {
+    async function fetchHoursData() {
+      try {
+        const { data } = await axios.get(`http://127.0.0.1:8000/api/loghoursCount/${locationId}/`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `token ${localStorage.getItem('token')}`,
+            'Access-Control-Allow-Origin': '*',
+          },
+        });
+        console.log(data);
+        setHoursData(data);
+      } catch (error) {
+        console.error('Error fetching hours data:', error);
+        setHoursData([]);
+      }
     }
+    fetchHoursData();
+  }, [locationId]);
 
-    const dailyData = {
-        labels: hoursData.map(type => type.type),
+  if (
+    !hoursData ||
+    !hoursData.daily_hours ||
+    !hoursData.weekly_hours ||
+    !hoursData.monthly_hours ||
+    Object.keys(hoursData.daily_hours).length === 0 ||
+    Object.keys(hoursData.weekly_hours).length === 0 ||
+    Object.keys(hoursData.monthly_hours).length === 0
+  ) {
+    return <div>Loading...</div>;
+  }
+
+  // Chart data
+    // Sort the keys for each dataset
+    const sortedDailyKeys = Object.keys(hoursData.daily_hours).sort();
+    const sortedWeeklyKeys = Object.keys(hoursData.weekly_hours).sort();
+    const sortedMonthlyKeys = Object.keys(hoursData.monthly_hours).sort();
+  
+    // Chart data
+    const chartData = {
+      daily: {
+        labels: sortedDailyKeys,
         datasets: [
-            {
-                label: 'Daily Hours',
-                data: hoursData.map(type => type.type),
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
-            },
+          {
+            label: 'Daily Hours',
+            data: sortedDailyKeys.map((key) => hoursData.daily_hours[key]),
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: 'rgba(75, 192, 192, 1)',
+            borderWidth: 2,
+          },
         ],
-    };
-
-    const weeklyData = {
-        labels: hoursData.map(type => type.type),
+      },
+      weekly: {
+        labels: sortedWeeklyKeys,
         datasets: [
-            {
-                label: 'Weekly Hours',
-                data: hoursData.map(type => type.type),
-                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                borderColor: 'rgba(255, 206, 86, 1)',
-                borderWidth: 1,
-            },
+          {
+            label: 'Weekly Hours',
+            data: sortedWeeklyKeys.map((key) => hoursData.weekly_hours[key]),
+            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+            borderColor: 'rgba(255, 206, 86, 1)',
+            borderWidth: 2,
+          },
         ],
-    };
-
-    const monthlyData = {
-        labels: hoursData.map(type => type.type),
+      },
+      monthly: {
+        labels: sortedMonthlyKeys,
         datasets: [
-            {
-                label: 'Monthly Hours',
-                data: hoursData.map(type => type.type),
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1,
-            },
+          {
+            label: 'Monthly Hours',
+            data: sortedMonthlyKeys.map((key) => hoursData.monthly_hours[key]),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 2,
+          },
         ],
+      },
     };
+  
 
-return (
-    <div className="HoursCount">
-        <h3>Daily Hours</h3>
-        <Bar data={dailyData} />
+  return (
+    <div className="HoursCount" style={{ width: "60%", margin: "0 auto" }}>
+      <Form.Control
+        as="select"
+        value={selectedChart}
+        onChange={(e) => setSelectedChart(e.target.value)}
+      >
+        <option value="daily">Daily Hours</option>
+        <option value="weekly">Weekly Hours</option>
+        <option value="monthly">Monthly Hours</option>
+      </Form.Control>
 
-        <h3>Weekly Hours</h3>
-        <Bar data={weeklyData} />
-
-        <h3>Monthly Hours</h3>
-        <Bar data={monthlyData} />
+      <Bar data={chartData[selectedChart]} />
     </div>
-);
+  );
 }
 
 export default HoursCount;
