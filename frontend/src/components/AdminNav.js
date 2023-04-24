@@ -10,6 +10,7 @@ import {AdminHome} from "./adminhome";
 import EnrollNonmembers from './enrollnonmembers';
 import EquipmentChart from './EquipmentChart';
 import UserCheckins from "./UserCheckins";
+import HoursCount from './HoursCount';
 
 function TopNav() {
     const [selectedLocation, setSelectedLocation] = useState(JSON.parse(localStorage.getItem('location')) || {});
@@ -42,6 +43,7 @@ function TopNav() {
                             <Nav.Link href="/adminhome/enrollnonmembers"style={{color: '#333'}}>Enroll</Nav.Link>
                             <Nav.Link href="/adminhome/equipmentdashboard"style={{color: '#333'}}>Equipment Dashboard</Nav.Link>
                             <Nav.Link href="/adminhome/usercheckins"style={{color: '#333'}}>Visitor Count Dashboard</Nav.Link>
+                            <Nav.Link href="/adminhome/hourscountdashboard"style={{color: '#333'}}>Hours Count</Nav.Link>
                         </Nav>
                         <Nav className="ml-auto">
                             <NavDropdown title={selectedLocation.location_name || "Location"} id="basic-nav-dropdown" onSelect={handleSelect}>
@@ -62,6 +64,7 @@ function TopNav() {
                 <Route path="usercheckins" element={<UserCheckins selectedLocation={selectedLocation}/>}/>
                 <Route path="enrollnonmembers" element={<EnrollNonmembers selectedLocation={selectedLocation}/>}/>
                 <Route path="equipmentdashboard" element={<EquipmentChart locationId={selectedLocation.location_id}/>}/>
+                <Route path="hourscountdashboard" element={<HoursCount locationId={selectedLocation.location_id}/>}/>
             </Routes>
             <Outlet />
         </>

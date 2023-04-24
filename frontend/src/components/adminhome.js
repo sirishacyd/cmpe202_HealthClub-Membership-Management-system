@@ -12,6 +12,7 @@ import AddTrainings from "./AddTrainings";
 import SignUpUsers from "./SignUpUsers";
 import AdminNav from "./AdminNav";
 import EquipmentChart from './EquipmentChart';
+import HoursCount from './HoursCount';
 
 import { Chart, registry } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
