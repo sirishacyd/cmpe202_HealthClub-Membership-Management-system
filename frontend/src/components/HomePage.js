@@ -24,16 +24,19 @@ const backgroundStyle = {
   backgroundPosition: 'center',
   backgroundRepeat: 'no-repeat',
   backgroundSize: 'cover',
+  
+
 };
 
 function HomePage() {
   return (
-      <div className="jumbotron">
-        <Container>
-          <img src={logo} alt="Gym Logo" className="logo" /> {/* Add logo */}
-          <h1 align="center">Welcome to Our Gym: Your Fitness Destination</h1>
+    
+    <div style={backgroundStyle}>
+   
+        <Container style={{ paddingTop: '40px' }}>
+          <h1 align="center" style={{fontStyle: 'italic'}}>Welcome to our Gym: Your Fitness Destination</h1>
         </Container>
-      <Container>
+      <Container className="Jumbotron">
         <Row className="my-4">
           <Col md={6}>
             <Card className="card-color">
@@ -77,21 +80,25 @@ function HomePage() {
           </Col>
         </Row>
       </Container>
-
-      <Container fluid as="footer" className="mt-4 py-4 border-top">
-        <Row>
-          <Col className="text-center">
-            <p>Gym Contact Information</p>
-          </Col>
-          <Col className="text-center">
-            <p>Social Media Links</p>
-          </Col>
-          <Col className="text-center">
-            <p>Additional Resources and Quick Links</p>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+      
+    
+      <footer className="mt-4 py-4 border-top">
+        <Container fluid>
+          <Row>
+            <Col className="text-center">
+              <p>Gym Contact Information</p>
+            </Col>
+            <Col className="text-center">
+              <p>Social Media Links</p>
+            </Col>
+            <Col className="text-center">
+              <p>Additional Resources and Quick Links</p>
+            </Col>
+          </Row>
+        </Container>
+      </footer>
+ 
+  </div>
   );
 }
 

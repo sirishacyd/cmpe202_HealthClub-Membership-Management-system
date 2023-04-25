@@ -45,7 +45,7 @@ function LocationDropdown({ asDropdown }) {
           ))}
         </select>
         {selectedLocation && selectedLocation !== "" && trainings.length > 0 ?
-          <table className={styles.table}>
+          <table className={styles.table} >
             <thead>
               <tr>
                 <th>Instructor Name</th>
@@ -56,7 +56,7 @@ function LocationDropdown({ asDropdown }) {
               </tr>
             </thead>
             <tbody>
-              {trainings.map(training => (
+            {trainings.filter((training) => new Date(training.end_time) > new Date()).map((training) => (
                 <tr key={training.training_id}>
                   <td>{training.instructor_name}</td>
                   <td>{training.training_type}</td>
@@ -68,7 +68,7 @@ function LocationDropdown({ asDropdown }) {
             </tbody>
           </table>
           :
-          <p>{selectedLocation && selectedLocation !== "" ? "No classes offered at this location." : ""}</p>
+          <p style={{ fontStyle: "italic", fontWeight: "bold" }}>{selectedLocation && selectedLocation !== "" ? "Currently no classes offered at this location!!" : ""}</p>
         }
       </div>
     );

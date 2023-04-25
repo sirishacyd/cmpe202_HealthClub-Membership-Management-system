@@ -23,10 +23,10 @@ export function Navigation() {
 
      return ( 
       <div>
-        <Navbar bg="dark" variant="dark">
-          <Navbar.Brand href="/">Healthclub App</Navbar.Brand> 
+        <Navbar bg="dark" variant="dark" expand="lg" style={{ height: '80px' }}>
+          <Navbar.Brand href="/" style={{ paddingRight: '20px',  paddingLeft: '20px' }}>Healthclub App</Navbar.Brand> 
           <Nav>
-          <Nav.Link href="/">Contact</Nav.Link> </Nav>           
+         </Nav>           
           <Nav className="me-auto">
               {
                   (() => {
@@ -37,14 +37,14 @@ export function Navigation() {
                             return <Nav.Link href="/adminhome/home">Home</Nav.Link>
                         }
                      } else {
-                         return <Nav.Link href="/">Home</Nav.Link>
+                         return <Nav.Link href="/" style={{ fontSize: "1.2em" }}>Home</Nav.Link>
                      }
                   })()
               }
           </Nav>
-          <Nav>
+          <Nav style={{ paddingRight: '20px' }} >
           {isAuth ? <Nav.Link href="/logout">Logout</Nav.Link> :  
-                    <Nav.Link href="/login">Login</Nav.Link>}
+                    <Nav.Link href="/login" style={{ fontSize: "1.2em" }}>Login</Nav.Link>}
           </Nav>
           
         </Navbar>

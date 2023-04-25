@@ -32,27 +32,29 @@
     border: 1px solid #ddd;
     font-size: 14px;
     margin-top: 20px;
+  
   }
   
   .table th, .table td {
     text-align: left;
-    padding: 8px;
+    padding: 5px;
+    
   }
   
   .table th {
-    background-color: #aeb4c1;
+    background-color: #939fba;
     border: 1px solid #aeb4c1;
   }
   
   .table tr:nth-child(even) {
-    background-color: #7093da;
+    background-color: #a6b3cb;
   }
   .table tr:nth-child(odd) {
-    background-color: #7093da;
+    background-color: #7389b4;
   }
   
   .table tr:hover {
-    background-color: black;
+    background-color: rgb(255, 255, 255);
   }
   
   
