@@ -37,14 +37,14 @@ export function Navigation() {
                             return <Nav.Link href="/adminhome/home">Home</Nav.Link>
                         }
                      } else {
-                         return <Nav.Link href="/" style={{ fontSize: "1.2em" }}>Home</Nav.Link>
+                         return <Nav.Link href="/" style={{ fontSize: "1.2em",color: "white" }}>Home</Nav.Link>
                      }
                   })()
               }
           </Nav>
           <Nav style={{ paddingRight: '20px' }} >
           {isAuth ? <Nav.Link href="/logout">Logout</Nav.Link> :  
-                    <Nav.Link href="/login" style={{ fontSize: "1.2em" }}>Login</Nav.Link>}
+                    <Nav.Link href="/login" style={{ fontSize: "1.2em",color: "white" }}>Login</Nav.Link>}
           </Nav>
           
         </Navbar>
