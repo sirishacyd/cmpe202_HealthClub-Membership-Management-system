@@ -92,7 +92,7 @@ function LogActivityForm() {
 
         <Form.Group className="d-flex align-items-center">
           <Form.Label className="mr-3">Calories</Form.Label>
-          <Form.Control type="number" placeholder="Enter Caloreis" value={calories} onChange={(event) => setCalories(event.target.value)} />
+          <Form.Control type="number" placeholder="Enter Calories" value={calories} onChange={(event) => setCalories(event.target.value)} />
         </Form.Group>
         <Form.Group className="d-flex align-items-center">
           <Form.Label className="mr-3">Timestamp</Form.Label>

@@ -22,9 +22,13 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from django.shortcuts import get_object_or_404
 from datetime import datetime
 from django.utils import timezone
+import collections
 from datetime import datetime, timedelta
 import pytz
 from django.db.models import Count
+from collections import defaultdict
+import json
+
 
 # Create your views here.
 
@@ -545,3 +549,50 @@ class VisitorCountByHourViewSet(viewsets.ModelViewSet):
          results.append(result)
         return Response(results, status=status.HTTP_200_OK)
 
+
+class HoursCountByLocationViewSet(viewsets.ModelViewSet):
+    queryset = User_log.objects.all()
+    serializer_class = UserLogSerializer
+    permission_classes = [IsAdminUser]
+
+    def list(self,request,location_id):
+    # Retrieve data from User_log model
+        if(location_id=='none'):
+          return Response({"error": "Please select a location"},
+                                status=status.HTTP_400_BAD_REQUEST) 
+        user_logs = User_log.objects.filter(location_id=location_id)
+        data = []
+        for user_log in user_logs:
+            user_id=user_log.username
+            checkin_time=user_log.checkin_time
+            checkout_time=user_log.checkout_time
+            location_id=user_log.location_id
+            if checkout_time:
+                data.append((checkin_time, checkout_time))
+        # Calculate hours
+        daily_hours = defaultdict(int)
+        weekly_hours = defaultdict(int)
+        monthly_hours = defaultdict(int)
+        results = []
+        for check_in, check_out in data:
+            check_in = datetime.fromisoformat(str(check_in))
+            check_out = datetime.fromisoformat(str(check_out))
+            
+            duration = (check_out - check_in).seconds / 3600
+            # Update daily_hours
+            day_key = str(check_in.date().isoformat())
+            daily_hours[day_key] += duration
+
+            # Update weekly_hours
+            week_key = str(check_in.year)+'_'+str(check_in.isocalendar()[1])
+            weekly_hours[week_key] += duration
+
+            # Update monthly_hours
+            month_key = str(check_in.year)+'_'+str(check_in.month)
+            monthly_hours[month_key] += duration
+        response_data = {
+            "daily_hours": {str(key): value for key, value in daily_hours.items()},
+            "weekly_hours": {str(key): value for key, value in weekly_hours.items()},
+            "monthly_hours": {str(key): value for key, value in monthly_hours.items()},
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
