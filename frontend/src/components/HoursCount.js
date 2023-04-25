@@ -36,7 +36,7 @@ function HoursCount({ locationId }) {
     Object.keys(hoursData.weekly_hours).length === 0 ||
     Object.keys(hoursData.monthly_hours).length === 0
   ) {
-    return <div>Loading...</div>;
+    return <div>Please select the location to see hoursData...</div>;
   }
 
   // Chart data
