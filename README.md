@@ -23,16 +23,18 @@ To Implement an end to end HealthClub Membership Management system for your favo
 *
 *
 #### Non-Member Features
-* 
-*
-*
+* Non-members can view the homepage. 
+* Non-members can view membership details and classes schedules based on locations.
+
 ### Architecture Diagram
+![scr1](Diagrams/HealthClub_Membership_Management_Architecture.png)
 
 ### Tech Stack
-*
-*
-*
-*
+* Frontend : ReactJS,Bootstrap
+* Backend: Python Django REST Framework
+* Database:PostgreSQL
+* Tools used:Visual Studio code/Any IDE
+* AWS components: EC2,R53,RDS,Load balancer and Auto-Scaling
 ### Sprint Meeting - Every Friday
 
 ### XP Core Values Implemented
