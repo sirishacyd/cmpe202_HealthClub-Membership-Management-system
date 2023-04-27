@@ -1,4 +1,4 @@
-# Team Name Code Wizards
+# HealthClub Membership Management System By Team - Code Wizards
 
 ### Team Members <br/>
 Bhavya Hegde <br/>
@@ -53,7 +53,7 @@ Sirisha Polisetty - Frontend and Backend <br/>
 * We hosted our Application on Cloud using AWS as Cloud Provider.
 * We Deployed our Application on Amazon EC2 as it offers a highly reliable environment.
 * We used Application Load Balancer, to distribute Web traffic among EC2 instances.
-* We hosted our Database on Amazon RDS. We chose postGreSQL because we wanted to enforce the relationships between entities and as most of the data was structured.
+* We hosted our Database on Amazon RDS. We chose PostGreSQL because we wanted to enforce the relationships between entities and as most of the data was structured.
 
 ### [UI Wireframes](https://github.com/gopinathsjsu/team-project-code-wizards/tree/main/UI%20Wireframework)
 
