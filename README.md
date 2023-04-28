@@ -17,11 +17,12 @@ To Implement an end to end HealthClub Membership Management system for your favo
 *
 *
 #### Member Features
-*
-*
-*
-*
-*
+* Access the gym home page to see information about the gym, available membership plans,and class schedules for the selected location.
+* Access a personalized page displaying individual class schedules and membership details
+* Review past activities, including classes attended and workout sessions, with filters for the past week, month, or last 90 days
+* Browse and sign up for classes based on the gym's class schedule and availability for the chosen location
+* Record workout hours for various gym activities such as treadmill, cycling, stair machines, or weight training to track progress and achievements
+
 #### Non-Member Features
 * Non-members can view the homepage. 
 * Non-members can view membership details and classes schedules based on locations.
