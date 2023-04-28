@@ -67,6 +67,8 @@ Sirisha Polisetty - Frontend and Backend <br/>
 
 ### [UI Wireframes](https://github.com/gopinathsjsu/team-project-code-wizards/tree/main/UI%20Wireframework)
 
+### [UML Diagrams](https://github.com/gopinathsjsu/team-project-code-wizards/tree/main/Diagrams)
+
 ### [API Documentation](https://docs.google.com/document/d/1L-xuCkBWL0NLYotEjAiYUzciYYHsNrZPEX1D7LG0Pvs/)
 
 ### [Project Board](https://github.com/orgs/gopinathsjsu/projects/75)
