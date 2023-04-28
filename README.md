@@ -10,12 +10,19 @@ Sirisha Polisetty <br/>
 To Implement an end to end HealthClub Membership Management system for your favorite Health club/Gym.
 
 ### Application Features Based on Roles
-#### Admin Features
-*
-*
-*
-*
-*
+#### Healthclub Employee Features
+* Signup members and non-members to the app
+* Enroll non-members in the training sessions
+* Checkin and checkout members and non-members
+* Manage membership(Eg. Upgrade non-members to members)
+* Add new trainings
+* View Analytics dashboard showing user activity summarized by location
+  * Classes and enrollments by day/week/month
+  * Hours spent in the gym by day/week/month
+  * Number of visitors by the hour each day/weekday/weekend
+  * Equipment usage statistics
+
+
 #### Member Features
 * Access the gym home page to see information about the gym, available membership plans,and class schedules for the selected location.
 * Access a personalized page displaying individual class schedules and membership details
