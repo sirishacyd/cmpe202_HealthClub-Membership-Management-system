@@ -36,7 +36,13 @@ function HoursCount({ locationId }) {
     Object.keys(hoursData.weekly_hours).length === 0 ||
     Object.keys(hoursData.monthly_hours).length === 0
   ) {
-    return <div>Please select the location to see hoursData...</div>;
+    return (
+    <div style={{width: '850px', height: '365px', margin: '0 auto'}}>
+        <Alert variant="info" className="text-center">
+            No Data available at the Moment
+        </Alert>
+    </div>
+    );
   }
 
   // Chart data
