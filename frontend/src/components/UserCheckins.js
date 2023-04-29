@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Chart from "chart.js/auto";
+import { FormControl, Button } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -49,11 +50,16 @@ const VisitorCountChart = ({ selectedLocation }) => {
             .then((response) => response.json())
             .then((data) => {
                 // Process data to extract hour and visitor_count values
-                const labels = data.map((entry) => entry.hour);
-                const values = data.map((entry) => entry.visitor_count);
-
-                // Set chart data in state
-                setChartData({ labels, values });
+                if (data === []) {
+                    setShowHeader("Oops! No data to show! We may have been closed?!")
+                    setChartData(undefined)
+                } else {
+                    // Set chart data in state
+                    console.log(data)
+                    const labels = data.map((entry) => entry.hour);
+                    const values = data.map((entry) => entry.visitor_count);
+                    setChartData({ labels, values });
+                }
             })
             .catch((error) => {
                 console.error("Error fetching data:", error)
@@ -112,56 +118,35 @@ const VisitorCountChart = ({ selectedLocation }) => {
 
 
     return (
-        <div>
+        <div className="HoursCount" style={{ width: "60%", margin: "0 auto" }}>
             <p align='center' style={{
                 fontSize: '22px',
                 zIndex: 1,
             }}>{showHeader}</p>
-            <div>
-                <label htmlFor="timePeriod">Time Period:</label> {' '}
-                <select
-                    id="timePeriod"
-                    name="timePeriod"
-                    value={timePeriod}
-                    onChange={(e) => {
-                        setTimePeriod(e.target.value);
-                        setShowOptionDropdown(e.target.value !== "day"); // Show/hide option dropdown based on selected value
-                    }}
-                >
-                    <option value="weekday">Weekday</option>
-                    <option value="weekend">Weekend</option>
-                    <option value="day">Day</option>
-                </select>
-            </div>
+
+            <FormControl as="select" id="timePeriod" name="timePeriod" value={timePeriod} onChange={(e) => {
+                setTimePeriod(e.target.value);
+                setShowOptionDropdown(e.target.value !== "day"); // Show/hide option dropdown based on selected value
+            }}>
+                <option value="weekday">Weekday</option>
+                <option value="weekend">Weekend</option>
+                <option value="day">Day</option>
+            </FormControl>
+
             {showOptionDropdown && (
-                <div>
-                    <label htmlFor="options">Options:</label> {' '}
-                    <select
-                        id="options"
-                        name="options"
-                        value={selectedOption}
-                        onChange={(e) => setSelectedOption(e.target.value)}
-                    >
-                        <option value="week">Last Week</option>
-                        <option value="month">Last Month</option>
-                        <option value="90_days">90 Days</option>
-                    </select>
-                </div>
+                <FormControl as="select" id="options" name="options" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
+                    <option value="week">Last Week</option>
+                    <option value="month">Last Month</option>
+                    <option value="90_days">90 Days</option>
+                </FormControl>
             )}
+
             {timePeriod === "day" && (
-                <div>
-                    <label htmlFor="selectedDate">Selected Date:</label>
-                    <input
-                        type="date"
-                        id="selectedDate"
-                        name="selectedDate"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
-                    />
-                </div>
+                <FormControl type="date" id="selectedDate" name="selectedDate" value={selectedDate} onChange={(e) => setSelectedDate(e.target.value)} />
             )}
-            <div style={{ width: "40%", margin: "0 auto" }}>
-                <canvas id="visitorCountChart" width="5" height="5"></canvas>
+
+            <div>
+                <canvas id="visitorCountChart" ></canvas>
             </div>
 
             <ToastContainer />
