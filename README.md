@@ -1,10 +1,10 @@
 # HealthClub Membership Management System By Team - Code Wizards
 
 ### Team Members <br/>
-Bhavya Hegde <br/>
-Blessy Dickson Daniel Moses <br/>
-Darshini Venkatesha Murthy Nag <br/>
-Sirisha Polisetty <br/>
+Bhavya Hegde - 016656029<br/>
+Blessy Dickson Daniel Moses -016697460<br/>
+Darshini Venkatesha Murthy Nag -016668951<br/>
+Sirisha Polisetty -016012477<br/>
 
 ### Problem Statement
 To Implement an end to end HealthClub Membership Management system for your favorite Health club/Gym.
@@ -42,7 +42,7 @@ To Implement an end to end HealthClub Membership Management system for your favo
 * Backend: Python Django REST Framework
 * Database:PostgreSQL
 * Tools used:Visual Studio code/Any IDE
-* AWS components: EC2,R53,RDS,Load balancer and Auto-Scaling
+* AWS components: EC2,Route 53,RDS, Application Load balancer and Auto-Scaling
 ### Sprint Meeting - Every Friday
 
 ### XP Core Values Implemented
