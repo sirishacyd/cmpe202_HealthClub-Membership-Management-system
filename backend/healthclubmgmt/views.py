@@ -221,6 +221,7 @@ class signUpTraining(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+
 ##
 class enrollmentStats(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
@@ -229,28 +230,27 @@ class enrollmentStats(viewsets.ModelViewSet):
         start_time_str = request.query_params.get('start_time')
         end_time_str = request.query_params.get('end_time')
         location_id = request.query_params.get('location_id')
-        
+
         if not start_time_str or not end_time_str or not location_id:
             return Response({'error': 'start_time, end_time, and location_id are required parameters'})
-        
+
         start_time = timezone.datetime.fromisoformat(start_time_str).replace(tzinfo=pytz.utc)
         end_time = timezone.datetime.fromisoformat(end_time_str).replace(tzinfo=pytz.utc)
-        
+
         # Query enrollments based on start time range and location_id
         enrollment_counts = Enrollments.objects.filter(
-            training_id__start_time__range=(start_time, end_time), 
+            training_id__start_time__range=(start_time, end_time),
             training_id__location_id__location_id=location_id
         ).values('training_type').annotate(count=Count('training_type'))
-        
+
         # Convert the queryset to a list of dictionaries for JSON serialization
         enrollment_counts_list = list(enrollment_counts)
-        
+
         return Response(enrollment_counts_list)
 
 
 ##     
 
-        
 
 class cancelEnrollment(viewsets.ModelViewSet):
     queryset = Enrollments.objects.all()
@@ -470,7 +470,7 @@ class ActivityLogSet(viewsets.ModelViewSet):
             })
 
         return JsonResponse({'logs': data})
-    
+
 
 class EquipmentViewSet(viewsets.ViewSet):
     queryset = ActivityLog.objects.all()
@@ -480,8 +480,11 @@ class EquipmentViewSet(viewsets.ViewSet):
     @action(detail=True, methods=['get'])
     def equipmenttypes(self, request, pk=None):
         location_id = pk
-        activity_logs = ActivityLog.objects.filter(username__user_log__location_id=location_id)
-        activity_counts = activity_logs.values('activity', 'activity__type').annotate(count=Count('activity')).order_by('-count')
+        user_logs = User_log.objects.filter(location_id=location_id)
+        activity_logs = ActivityLog.objects.filter(username__in=user_logs.values_list('username', flat=True))
+        # activity_logs = ActivityLog.objects.filter(username__user_log__location_id=location_id)
+        activity_counts = activity_logs.values('activity', 'activity__type').annotate(count=Count('activity')).order_by(
+            '-count')
         activity_types = [{'type': count['activity__type'], 'count': count['count']} for count in activity_counts]
         return Response(activity_types)
 
@@ -491,29 +494,29 @@ class VisitorCountByHourViewSet(viewsets.ModelViewSet):
     serializer_class = UserLogSerializer
     permission_classes = [IsAdminUser]
 
-    def list(self,request,location_id):
+    def list(self, request, location_id):
         # Get the query parameters from the request
         time_period = self.request.query_params.get('time_period')
-        options=self.request.query_params.get('options')
+        options = self.request.query_params.get('options')
         selected_date = self.request.query_params.get('selected_date')
-        if(location_id=='none'):
-          return Response({"error": "Please select a location"},
-                                status=status.HTTP_400_BAD_REQUEST)  
-        # Filter user logs based on location
+        if (location_id == 'none'):
+            return Response({"error": "Please select a location"},
+                            status=status.HTTP_400_BAD_REQUEST)
+            # Filter user logs based on location
         user_logs = User_log.objects.filter(location_id=location_id)
-        if time_period=='weekday' or time_period =='weekend':
+        if time_period == 'weekday' or time_period == 'weekend':
             if not options:
                 return Response({"error": "Please select a time range"},
-                                status=status.HTTP_400_BAD_REQUEST)  
-            elif options== '90_days':
+                                status=status.HTTP_400_BAD_REQUEST)
+            elif options == '90_days':
                 today = timezone.now()
                 past_period = today - timedelta(days=90)
                 user_logs = user_logs.filter(checkin_time__gte=past_period)
-            elif options== 'week':
+            elif options == 'week':
                 today = timezone.now()
                 past_period = today - timedelta(weeks=1)
                 user_logs = user_logs.filter(checkin_time__gte=past_period)
-            elif options== 'month':
+            elif options == 'month':
                 today = timezone.now()
                 past_period = today - timedelta(weeks=4)
                 user_logs = user_logs.filter(checkin_time__gte=past_period)
@@ -537,16 +540,17 @@ class VisitorCountByHourViewSet(viewsets.ModelViewSet):
 
             user_logs = user_logs.filter(checkin_time__date=selected_date)
         # Count the number of visitors by the hour
-        visitor_counts = user_logs.values('checkin_time__hour').annotate(visitor_count=Count('*')).order_by('checkin_time__hour')
+        visitor_counts = user_logs.values('checkin_time__hour').annotate(visitor_count=Count('*')).order_by(
+            'checkin_time__hour')
         results = []
         for count in visitor_counts:
-         hour = count['checkin_time__hour']
-         hour_12 = datetime.strptime(str(hour), '%H').strftime('%I %p')
-         result = {
-        'hour': hour_12,
-        'visitor_count': count['visitor_count']
-         }
-         results.append(result)
+            hour = count['checkin_time__hour']
+            hour_12 = datetime.strptime(str(hour), '%H').strftime('%I %p')
+            result = {
+                'hour': hour_12,
+                'visitor_count': count['visitor_count']
+            }
+            results.append(result)
         return Response(results, status=status.HTTP_200_OK)
 
 
@@ -555,18 +559,18 @@ class HoursCountByLocationViewSet(viewsets.ModelViewSet):
     serializer_class = UserLogSerializer
     permission_classes = [IsAdminUser]
 
-    def list(self,request,location_id):
-    # Retrieve data from User_log model
-        if(location_id=='none'):
-          return Response({"error": "Please select a location"},
-                                status=status.HTTP_400_BAD_REQUEST) 
+    def list(self, request, location_id):
+        # Retrieve data from User_log model
+        if (location_id == 'none'):
+            return Response({"error": "Please select a location"},
+                            status=status.HTTP_400_BAD_REQUEST)
         user_logs = User_log.objects.filter(location_id=location_id)
         data = []
         for user_log in user_logs:
-            user_id=user_log.username
-            checkin_time=user_log.checkin_time
-            checkout_time=user_log.checkout_time
-            location_id=user_log.location_id
+            user_id = user_log.username
+            checkin_time = user_log.checkin_time
+            checkout_time = user_log.checkout_time
+            location_id = user_log.location_id
             if checkout_time:
                 data.append((checkin_time, checkout_time))
         # Calculate hours
@@ -577,18 +581,18 @@ class HoursCountByLocationViewSet(viewsets.ModelViewSet):
         for check_in, check_out in data:
             check_in = datetime.fromisoformat(str(check_in))
             check_out = datetime.fromisoformat(str(check_out))
-            
+
             duration = (check_out - check_in).seconds / 3600
             # Update daily_hours
             day_key = str(check_in.date().isoformat())
             daily_hours[day_key] += duration
 
             # Update weekly_hours
-            week_key = str(check_in.year)+'_'+str(check_in.isocalendar()[1])
+            week_key = str(check_in.year) + '_' + str(check_in.isocalendar()[1])
             weekly_hours[week_key] += duration
 
             # Update monthly_hours
-            month_key = str(check_in.year)+'_'+str(check_in.month)
+            month_key = str(check_in.year) + '_' + str(check_in.month)
             monthly_hours[month_key] += duration
         response_data = {
             "daily_hours": {str(key): value for key, value in daily_hours.items()},
