@@ -17,7 +17,7 @@ export const MemberHome = () => {
 
      const handleDelete = async (id) => {
         try {
-            await axios.delete(`http://localhost:8000/api/cancelenrollment/${id}`, {
+            await axios.delete(`http://${process.env.REACT_APP_BACKEND_URL}/api/cancelenrollment/${id}`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `token ${localStorage.getItem('token')}`,
@@ -42,7 +42,7 @@ export const MemberHome = () => {
            try {
             console.log("VIEWTRAININGS")
              const {data} = await axios.get(   
-                            'http://localhost:8000/api/viewmembertrainingenrollment/', {
+                            'http://'+process.env.REACT_APP_BACKEND_URL+'/api/viewmembertrainingenrollment/', {
                              headers: {
                                 'Content-Type': 'application/json',
                                 'Authorization' : `token ${localStorage.getItem('token')}`,

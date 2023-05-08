@@ -23,7 +23,7 @@ function TopNav() {
     }
 
     useEffect(() => {
-        fetch('http://127.0.0.1:8000/api/locations/')
+        fetch('http://'+process.env.REACT_APP_BACKEND_URL+'/api/locations/')
             .then(response => response.json())
             .then(data => setLocations(data));
     }, []);

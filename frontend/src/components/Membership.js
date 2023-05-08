@@ -31,7 +31,7 @@ class Membership extends React.Component {
     getId() {
         return new Promise((resolve, reject) => {
             fetch(
-                "http://localhost:8000/api/user/" + this.state.email, {
+                "http://"+process.env.REACT_APP_BACKEND_URL+"/api/user/" + this.state.email, {
                     method: 'GET', headers: {
                         'Authorization': 'token ' + localStorage.getItem("token"), 'Content-Type': 'application/json'
                     },
@@ -67,7 +67,7 @@ class Membership extends React.Component {
 
     doPut(id) {
         fetch(
-            "http://localhost:8000/api/updateMembership/" + id, {method: 'PUT', headers: {
+            "http://"+process.env.REACT_APP_BACKEND_URL+"/api/updateMembership/" + id, {method: 'PUT', headers: {
                     'Authorization': 'Token ' + localStorage.getItem("token")},
                 }
         )

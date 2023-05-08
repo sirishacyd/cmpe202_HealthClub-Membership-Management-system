@@ -45,7 +45,7 @@ export const AdminHome = ({selectedLocation}) => {
          (async () => {
            try {
             setMessage(localStorage.getItem('first_name'));
-            const myurl  = "http://127.0.0.1:8000/api/enrollmentstats/?location_id="+mylocationId+"&start_time="+moment(startDate).utc().format('YYYY-MM-DDTHH:mm:ss')+"&end_time="+moment(endDate).utc().format('YYYY-MM-DDTHH:mm:ss');
+            const myurl  = "http://"+process.env.REACT_APP_BACKEND_URL+"/api/enrollmentstats/?location_id="+mylocationId+"&start_time="+moment(startDate).utc().format('YYYY-MM-DDTHH:mm:ss')+"&end_time="+moment(endDate).utc().format('YYYY-MM-DDTHH:mm:ss');
     axios.get(myurl,{
       headers: {
         'Content-Type': 'application/json',

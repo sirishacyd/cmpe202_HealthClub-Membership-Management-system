@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 function SignUpUsers() {
-  const urlPost = 'http://localhost:8000/api/signup/';
+  const urlPost = 'http://'+process.env.REACT_APP_BACKEND_URL+'/api/signup/';
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [userName, setUserName] = useState('');

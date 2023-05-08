@@ -24,7 +24,7 @@ function LogActivityForm() {
     localStorage.setItem('username', username);
   }, [username]);
   useEffect(() => {
-    axios.get('http://localhost:8000/api/activities/', config)
+    axios.get('http://'+process.env.REACT_APP_BACKEND_URL+'/api/activities/', config)
       .then(response => {
         setActivities(response.data);
       })
@@ -35,7 +35,7 @@ function LogActivityForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const apiUrl = 'http://localhost:8000/api/logHours/';
+    const apiUrl = 'http://'+process.env.REACT_APP_BACKEND_URL+'/api/logHours/';
     const requestData = {
       username: username,
       activity: activity,

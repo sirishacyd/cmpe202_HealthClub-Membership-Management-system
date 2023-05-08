@@ -21,7 +21,7 @@ export const Enroll = () => {
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get('http://127.0.0.1:8000/api/locations/', {
+        const { data } = await axios.get('http://'+process.env.REACT_APP_BACKEND_URL+'/api/locations/', {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `token ${localStorage.getItem('token')}`,
@@ -39,7 +39,7 @@ export const Enroll = () => {
   useEffect(() => {
     (async () => {
       try {
-        const url = locationId ? `http://127.0.0.1:8000/api/viewtrainings/${locationId}` : 'http://127.0.0.1:8000/api/viewtrainings/';
+        const url = locationId ? `http://${process.env.REACT_APP_BACKEND_URL}/api/viewtrainings/${locationId}` : 'http://'+process.env.REACT_APP_BACKEND_URL+'/api/viewtrainings/';
         const { data } = await axios.get(url, {
           headers: {
             'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export const Enroll = () => {
     try {
       
       
-      const response = await axios.post('http://127.0.0.1:8000/api/signupfortraining/',  { "training_id": trainingId }, {
+      const response = await axios.post('http://'+process.env.REACT_APP_BACKEND_URL+'/api/signupfortraining/',  { "training_id": trainingId }, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Token ${localStorage.getItem('token')}`,

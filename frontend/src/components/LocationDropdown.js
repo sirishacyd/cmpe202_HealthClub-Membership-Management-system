@@ -8,15 +8,16 @@ function LocationDropdown({ asDropdown }) {
   const [selectedLocation, setSelectedLocation] = useState(defaultLocationId);
   const [trainings, setTrainings] = useState([]);
 
+  console.log("URI: " + process.env.REACT_APP_BACKEND_URL)
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/locations/')
+    fetch('http://'+process.env.REACT_APP_BACKEND_URL+'/api/locations/')
       .then(response => response.json())
       .then(data => setLocations(data));
   }, []);
 
   useEffect(() => {
     if (selectedLocation) {
-      fetch(`http://127.0.0.1:8000/api/viewtrainings/${selectedLocation}`)
+      fetch(`http://${process.env.REACT_APP_BACKEND_URL}/api/viewtrainings/${selectedLocation}`)
         .then(response => response.json())
         .then(data => setTrainings(data));
     } else {

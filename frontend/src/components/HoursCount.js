@@ -10,7 +10,7 @@ function HoursCount({ locationId }) {
   useEffect(() => {
     async function fetchHoursData() {
       try {
-        const { data } = await axios.get(`http://127.0.0.1:8000/api/loghoursCount/${locationId}/`, {
+        const { data } = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/api/loghoursCount/${locationId}/`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `token ${localStorage.getItem('token')}`,

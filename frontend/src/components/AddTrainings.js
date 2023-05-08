@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 function AddTrainings() {
-  const urlPost = 'http://localhost:8000/api/addClassSchedules/';
+  const urlPost = 'http://'+process.env.REACT_APP_BACKEND_URL+'/api/addClassSchedules/';
   const [instructorName, setInstructorName] = useState('');
   const [trainingType, setTrainingType] = useState('');
   const [maxCapacity, setMaxCapacity] = useState('');
