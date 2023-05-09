@@ -34,7 +34,7 @@ class CheckIn extends React.Component {
      getId() {
          return new Promise((resolve, reject) => {
              fetch(
-                 "http://"+process.env.REACT_APP_BACKEND_URL+"/api/user/" + this.state.email, {
+                 process.env.REACT_APP_BACKEND_URL+"/api/user/" + this.state.email, {
                      method: 'GET', headers: {
                          'Authorization': 'token ' + localStorage.getItem("token"), 'Content-Type': 'application/json'
                      },
@@ -99,7 +99,7 @@ class CheckIn extends React.Component {
         }
 
         fetch(
-            "http://"+process.env.REACT_APP_BACKEND_URL+"/api/checkout/", {method: 'PUT', headers: {
+            process.env.REACT_APP_BACKEND_URL+"/api/checkout/", {method: 'PUT', headers: {
                     'Authorization': 'token ' + localStorage.getItem("token"),
                     'Content-Type': 'application/json'},
                 body: JSON.stringify(data)}
@@ -135,7 +135,7 @@ class CheckIn extends React.Component {
         }
 
         fetch(
-            "http://"+process.env.REACT_APP_BACKEND_URL+"/api/checkin/", {method: 'POST', headers: {
+            process.env.REACT_APP_BACKEND_URL+"/api/checkin/", {method: 'POST', headers: {
                     'Authorization': 'token ' + localStorage.getItem("token"),
                     'Content-Type': 'application/json'},
                 body: JSON.stringify(data)}

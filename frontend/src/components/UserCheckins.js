@@ -38,9 +38,9 @@ const VisitorCountChart = ({ selectedLocation }) => {
         // Define API URL with location_id, time_period, and selected_date as path and query params
         let apiUrl;
         if (timePeriod === "day") {
-            apiUrl = `http://${process.env.REACT_APP_BACKEND_URL}/api/visitorCount/${locationId}/?time_period=${timePeriod}&selected_date=${selectedDate}`;
+            apiUrl = `${process.env.REACT_APP_BACKEND_URL}/api/visitorCount/${locationId}/?time_period=${timePeriod}&selected_date=${selectedDate}`;
         } else {
-            apiUrl = `http://${process.env.REACT_APP_BACKEND_URL}/api/visitorCount/${locationId}/?time_period=${timePeriod}&options=${selectedOption}`;
+            apiUrl = `${process.env.REACT_APP_BACKEND_URL}/api/visitorCount/${locationId}/?time_period=${timePeriod}&options=${selectedOption}`;
         }
 
         // Fetch data from API

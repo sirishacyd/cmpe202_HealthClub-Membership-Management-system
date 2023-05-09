@@ -10,7 +10,7 @@ function EquipmentChart({ locationId }) {
   useEffect(() => {
   async function fetchActivityTypes() {
     try {
-      const {data} = await axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/api/equipmenttypes/${locationId}`, {
+      const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/equipmenttypes/${locationId}`, {
                              headers: {
                                 'Content-Type': 'application/json',
                                 'Authorization' : `token ${localStorage.getItem('token')}`,

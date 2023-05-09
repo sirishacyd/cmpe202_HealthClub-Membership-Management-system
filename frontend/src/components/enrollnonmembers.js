@@ -49,7 +49,7 @@ const EnrollNonmembers = ({selectedLocation}) => {
     console.log(selectedLocation.location_id);
     const mylocation = selectedLocation.location_id;
   
-    axios.get(`http://${process.env.REACT_APP_BACKEND_URL}/api/viewtrainings/${mylocation}`, {
+    axios.get(`${process.env.REACT_APP_BACKEND_URL}/api/viewtrainings/${mylocation}`, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `token ${localStorage.getItem('token')}`,
@@ -81,7 +81,7 @@ const EnrollNonmembers = ({selectedLocation}) => {
     event.preventDefault();
 
     const data = { training_id: myTrainingID, username: userEmail };
-    axios.post('http://'+process.env.REACT_APP_BACKEND_URL+'/api/signupnonmembers/', data, {
+    axios.post(process.env.REACT_APP_BACKEND_URL+'/api/signupnonmembers/', data, {
         headers: {
            'Content-Type': 'application/json',
            'Authorization' : `token ${localStorage.getItem('token')}`,

@@ -10,14 +10,14 @@ function LocationDropdown({ asDropdown }) {
 
   console.log("URI: " + process.env.REACT_APP_BACKEND_URL)
   useEffect(() => {
-    fetch('http://'+process.env.REACT_APP_BACKEND_URL+'/api/locations/')
+    fetch(process.env.REACT_APP_BACKEND_URL+'/api/locations/')
       .then(response => response.json())
       .then(data => setLocations(data));
   }, []);
 
   useEffect(() => {
     if (selectedLocation) {
-      fetch(`http://${process.env.REACT_APP_BACKEND_URL}/api/viewtrainings/${selectedLocation}`)
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/api/viewtrainings/${selectedLocation}`)
         .then(response => response.json())
         .then(data => setTrainings(data));
     } else {

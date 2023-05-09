@@ -5,7 +5,7 @@ export const Logout = () => {
        (async () => {
          try {
            const {data} = await  
-                 axios.delete('http://'+process.env.REACT_APP_BACKEND_URL+'/logout/',{
+                 axios.delete(process.env.REACT_APP_BACKEND_URL+'/logout/',{
                     headers: {'Content-Type': 'application/json',
                     'Authorization' : `token ${localStorage.getItem('token')}`,
                     "Access-Control-Allow-Origin": "*"}}  

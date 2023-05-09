@@ -18,7 +18,7 @@ const ViewActivities = () => {
                 'Content-Type': 'application/json'
             },
         };
-        fetch(`http://${process.env.REACT_APP_BACKEND_URL}/api/getActivityLog/?options=${options.key}`, requestOptions)
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/api/getActivityLog/?options=${options.key}`, requestOptions)
             .then((response) => {
                 if (response.ok) {
                     return response.json();
