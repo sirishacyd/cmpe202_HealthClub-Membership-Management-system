@@ -81,3 +81,7 @@ Sirisha Polisetty - Frontend and Backend <br/>
 
 ### [Project Sprint Task Sheet and Burndown Chart](https://docs.google.com/spreadsheets/d/1gh1m1cc37O5jzcjil8OEjS9EB_Ar_FAh/)
 
+
+### References: 
+https://www.chartjs.org/docs/latest/samples/information.html
+
