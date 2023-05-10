@@ -15,7 +15,7 @@ To Implement an end to end HealthClub Membership Management system for your favo
 ### Application Features Based on Roles
 #### Healthclub Employee Features
 * Signup members and non-members to the app
-* Enroll non-members in the training sessions
+* Enroll members and non-members in the training sessions
 * Checkin and checkout members and non-members
 * Manage membership(Eg. Upgrade non-members to members)
 * Add new trainings
