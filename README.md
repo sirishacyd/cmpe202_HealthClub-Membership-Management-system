@@ -3,7 +3,7 @@
 ### Team Members <br/>
 Bhavya Hegde - 016656029<br/>
 Blessy Dickson Daniel Moses -016697460<br/>
-Darshini Venkatesha Murthy Nag -016668951<br/>
+Darshini Venkatesha Murthy Nag -016668951 (Scrum Master)<br/>
 Sirisha Polisetty -016012477<br/>
 
 ### Application URL
@@ -65,7 +65,8 @@ Sirisha Polisetty - Frontend and Backend <br/>
 * We opted to use ReactJs as our frontend technology as ReactJS boasts a modular architecture that facilitates easy development, management, updating, and scaling of applications. It's well-defined structure also simplifies testing and debugging. Additionally, UI components can be deconstructed and reused.
 * We hosted our Application on Cloud using AWS as Cloud Provider.
 * We Deployed our Application on Amazon EC2 as it offers a highly reliable environment.
-* We used Application Load Balancer, to distribute Web traffic among EC2 instances.
+* We used Application Load Balancers, to distribute Web traffic among EC2 instances.
+* We installed SSL/TLS certificates to our load balancers for secure communications.
 * We hosted our Database on Amazon RDS. We chose PostGreSQL because we wanted to enforce the relationships between entities and as most of the data was structured.
 
 ### [UI Wireframes](https://github.com/gopinathsjsu/team-project-code-wizards/tree/main/UI%20Wireframework)
