@@ -46,6 +46,7 @@ To Implement an end to end HealthClub Membership Management system for your favo
 * Database:PostgreSQL
 * Tools used:Visual Studio code/Any IDE
 * AWS components: EC2,Route 53,RDS, Application Load balancer and Auto-Scaling
+
 ### Sprint Meeting - Every Friday
 
 ### XP Core Values Implemented
@@ -81,7 +82,11 @@ Sirisha Polisetty - Frontend and Backend <br/>
 
 ### [Project Sprint Task Sheet and Burndown Chart](https://docs.google.com/spreadsheets/d/1gh1m1cc37O5jzcjil8OEjS9EB_Ar_FAh/)
 
+### [AWS Deployment Documentation](https://docs.google.com/document/d/10sPRSPOXpe98DlISMDoHJrzFm20QSP-yykYTf5d6l5k/)
+
 
 ### References: 
-https://www.chartjs.org/docs/latest/samples/information.html
+https://www.chartjs.org/docs/latest/samples/information.html <br/>
+
+https://react-bootstrap.github.io/getting-started/introduction/
 
