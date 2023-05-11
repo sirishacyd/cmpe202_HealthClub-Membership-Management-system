@@ -84,7 +84,7 @@ Sirisha Polisetty - Frontend and Backend <br/>
 
 ### [AWS Deployment Documentation](https://docs.google.com/document/d/10sPRSPOXpe98DlISMDoHJrzFm20QSP-yykYTf5d6l5k/)
 
-### [Application Screenshots](https://github.com/gopinathsjsu/team-project-code-wizards/blob/main/Documentation/CMPE_202_TeamProject_AWS_Deployment_Screenshots.docx)
+### [Application Screenshots](https://github.com/gopinathsjsu/team-project-code-wizards/blob/main/Documentation/Application%20Screenshots.docx)
 
 
 ### References: 
